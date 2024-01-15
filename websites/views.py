@@ -110,7 +110,7 @@ def scraper(startdate, enddate):
     input_element1 = driver.find_element(By.ID, 'ctl00_PageContent_dpValFrom')
     input_element2 = driver.find_element(By.ID, 'ctl00_PageContent_dpValTo')
     input_element1.send_keys('01/01/2024')
-    input_element2.send_keys('10/01/2024')
+    input_element2.send_keys('02/01/2024')
     # Click the search button
     search_element = driver.find_element(By.CLASS_NAME, 'btn-primary')
 
@@ -170,9 +170,6 @@ def scraper(startdate, enddate):
         address = address_div.text.strip()
         format_address(address)
         
-        
-        
-
         a_tag = row.find('a')
         link_text = a_tag.get_text(strip=True)
         element = driver.find_element(By.LINK_TEXT, link_text)
@@ -204,6 +201,7 @@ def scraper(startdate, enddate):
         data.append(item)
 
     print(data)
+    return data
 
 
     # Close the browser window
