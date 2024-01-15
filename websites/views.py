@@ -16,6 +16,9 @@ import re
 import time
 import pprint
 
+# Fix bugs, get the rows to be searched by word for just the description not everything like the address
+# fix data
+
 # Create your views here.
 def home(request):
     return render(request, 'index.html', {})
@@ -34,9 +37,6 @@ def test(request):
 		
 
 	return render(request, 'test.html', context)
-
-
-
 
 
 def richmond(request):
@@ -80,8 +80,6 @@ def convert(s):
     return new
 
 
-
-
 row_list = []
 address_list = []
 name_list = []
@@ -99,12 +97,20 @@ def scraper(startdate, enddate):
     words_search_for = words.rstrip(words[-1])
 
 
-
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
     driver = webdriver.Chrome()
 
     url = 'https://www2.richmond.gov.uk/lbrplanning/Planning_Report.aspx'
     driver.get(url)
+
+    # alldates = pd.date_range(start=f"{startdate}", end=f"{enddate}").strftime("%Y-%m-%d")
+    # print(alldates)
+    # alldateslist = list(alldates)
+    print(startdate)[::-1]
+    print(enddate)[::-1]
+    print(enddate[::-1])
+
+
 
     # Input start and end dates
     input_element1 = driver.find_element(By.ID, 'ctl00_PageContent_dpValFrom')
@@ -132,8 +138,6 @@ def scraper(startdate, enddate):
 
     wait = WebDriverWait(driver, 10)
     wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'infocontent')))
-    # driver.execute_script("location.reload(true);")
-    # ctl00_PageContent_lbl_APPS
 
 
     # Get the page source after the search
@@ -151,7 +155,6 @@ def scraper(startdate, enddate):
         driver.quit()
     else:
         print('Number of results for this search is: ' + num_results.text)
-
 
 
     searchResultsPage = soup.find('ul', class_='planning-apps')
@@ -189,7 +192,6 @@ def scraper(startdate, enddate):
 
         name = name_soup.find('span', id='ctl00_PageContent_lbl_Applic_Name')
         
-        # name = name_rows.find('td')
         name_list.append(name.text.strip())
         driver.back()
         driver.back()
@@ -201,8 +203,7 @@ def scraper(startdate, enddate):
         data.append(item)
 
     print(data)
-    return data
-
 
     # Close the browser window
     driver.quit()
+    return data
