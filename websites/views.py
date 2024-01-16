@@ -12,6 +12,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import Select
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 import re
 import time
 import pprint
@@ -36,6 +38,42 @@ def test(request):
         enddate = datesdict['enddate']
         wordlist = get_word_objects()
         my_list = scraper(startdate, enddate, wordlist)
+
+        # Open the Google Spreadsheet using its title
+        # Set up the credentials
+        # my_list = [('one', 'ethan'), ('two', 'wicks'), ('three', 'ofrm')]
+
+        # Set up the credentials
+        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        creds = ServiceAccountCredentials.from_json_keyfile_name("/Users/ethanwicks/Desktop/credentials.json", scope)
+        client = gspread.authorize(creds)
+
+        # Open the Google Spreadsheet using its title
+        spreadsheet = client.open("project")
+
+        # Select the desired worksheet
+        worksheet = spreadsheet.get_worksheet(0)  # You can change the index to select a different sheet
+
+        worksheet.clear()
+
+        # Define column titles
+        column_titles = ["Index", "Name", "Address"]
+
+        # Initialize data_to_write with header row
+        data_to_write = [column_titles]
+
+        # Loop through your_list with index
+        for index, item in enumerate(my_list):
+            row_data = [index + 1] + list(item)
+            data_to_write.append(row_data)
+
+        # Write data to the spreadsheet
+        worksheet.append_rows(data_to_write)
+
+        # Close the connection
+        creds = None
+
+
 
         context = {
             'my_list': my_list,
@@ -92,24 +130,15 @@ def format_address(addresss):
 
 
 def scraper(startdate, enddate, wordlist):
+    data = []
    
-    # wordlist = ['rear']
-    # print(wordlist)
     words = convert(wordlist)
     words_search_for = words.rstrip(words[-1])
-    print(words_search_for)
-    print(words_search_for)
-
  
     parsed_startdate = pd.to_datetime(startdate, format='%Y/%m/%d')
     parsed_enddate = pd.to_datetime(enddate, format='%Y/%m/%d')
     reversed_startdate = parsed_startdate.strftime('%d/%m/%Y')
     reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
-    print(reversed_startdate)
-    print(reversed_enddate)
-
-
-
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
     driver = webdriver.Chrome()
