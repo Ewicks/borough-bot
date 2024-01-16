@@ -23,20 +23,25 @@ import pprint
 def home(request):
     return render(request, 'index.html', {})
 
+def get_word_objects():
+	words = Word.objects.values_list('word', flat=True)
+	objectlist = list(words)
+
+	return objectlist
+
 def test(request):
-	if request.method == 'POST':
-		datesdict = request.POST.dict()
-		startdate = datesdict['startdate']
-		enddate = datesdict['enddate']
-       
-		list = scraper(startdate, enddate)
+    if request.method == 'POST':
+        datesdict = request.POST.dict()
+        startdate = datesdict['startdate']
+        enddate = datesdict['enddate']
+        wordlist = get_word_objects()
+        my_list = scraper(startdate, enddate, wordlist)
 
-	context = {
-		'list': list,
-	}
-		
+        context = {
+            'my_list': my_list,
+        }
 
-	return render(request, 'test.html', context)
+        return render(request, 'test.html', context)
 
 
 def richmond(request):
@@ -60,11 +65,7 @@ def richmond(request):
     return render(request, 'richmond.html', context)
 
 
-def get_word_objects():
-	words = Word.objects.values_list('word', flat=True)
-	objectlist = list(words)
 
-	return objectlist
 
 
 def convert(s):
@@ -90,11 +91,24 @@ def format_address(addresss):
     address_list.append(formatted_address)
 
 
-def scraper(startdate, enddate):
+def scraper(startdate, enddate, wordlist):
    
-    wordlist = ['rear']
+    # wordlist = ['rear']
+    # print(wordlist)
     words = convert(wordlist)
     words_search_for = words.rstrip(words[-1])
+    print(words_search_for)
+    print(words_search_for)
+
+ 
+    parsed_startdate = pd.to_datetime(startdate, format='%Y/%m/%d')
+    parsed_enddate = pd.to_datetime(enddate, format='%Y/%m/%d')
+    reversed_startdate = parsed_startdate.strftime('%d/%m/%Y')
+    reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
+    print(reversed_startdate)
+    print(reversed_enddate)
+
+
 
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
@@ -103,20 +117,11 @@ def scraper(startdate, enddate):
     url = 'https://www2.richmond.gov.uk/lbrplanning/Planning_Report.aspx'
     driver.get(url)
 
-    # alldates = pd.date_range(start=f"{startdate}", end=f"{enddate}").strftime("%Y-%m-%d")
-    # print(alldates)
-    # alldateslist = list(alldates)
-    print(startdate)[::-1]
-    print(enddate)[::-1]
-    print(enddate[::-1])
-
-
-
     # Input start and end dates
     input_element1 = driver.find_element(By.ID, 'ctl00_PageContent_dpValFrom')
     input_element2 = driver.find_element(By.ID, 'ctl00_PageContent_dpValTo')
-    input_element1.send_keys('01/01/2024')
-    input_element2.send_keys('02/01/2024')
+    input_element1.send_keys(reversed_startdate)
+    input_element2.send_keys(reversed_enddate)
     # Click the search button
     search_element = driver.find_element(By.CLASS_NAME, 'btn-primary')
 
@@ -138,6 +143,8 @@ def scraper(startdate, enddate):
 
     wait = WebDriverWait(driver, 10)
     wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'infocontent')))
+    # driver.execute_script("location.reload(true);")
+    # ctl00_PageContent_lbl_APPS
 
 
     # Get the page source after the search
@@ -157,42 +164,48 @@ def scraper(startdate, enddate):
         print('Number of results for this search is: ' + num_results.text)
 
 
+
     searchResultsPage = soup.find('ul', class_='planning-apps')
     searchResults = searchResultsPage.find_all('li')
 
+    # search the description but append all rows with key words in description to row_list
     for row in searchResults:
+        address_divs = row.find_all('p')
+        address_desc = address_divs[1].text
 
-        if (re.search(words_search_for, row.text, flags=re.I)):
+        if (re.search(words_search_for, address_desc, flags=re.I)):
             row_list.append(row)
-
     
-    for row in row_list:
 
+    for row in row_list:
         # Find the address and add to address_list
         address_div = row.find('h3')
         address = address_div.text.strip()
         format_address(address)
-        
+
         a_tag = row.find('a')
-        link_text = a_tag.get_text(strip=True)
-        element = driver.find_element(By.LINK_TEXT, link_text)
-
+        href_value = a_tag.get('href')
+        element = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, f"//a[@href='{href_value}']"))
+        )
         element.click()
-        wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.ID, 'ctl00_PageContent_btnShowApplicantDetails')))
+        try:
+            subtab = None
+            subtab = driver.find_element(By.ID, 'ctl00_PageContent_btnShowApplicantDetails')
+        except:
+            driver.back()
+            name_list.append('n/a')
+            continue
 
-        subtab = driver.find_element(By.ID, 'ctl00_PageContent_btnShowApplicantDetails')
+    
         subtab.click()
-
         wait = WebDriverWait(driver, 10)
         wait.until(EC.presence_of_element_located((By.ID, 'ctl00_PageContent_lbl_Applic_Name')))
         name_page_source = driver.page_source
         name_soup = BeautifulSoup(name_page_source, 'html.parser')
-
-
         name = name_soup.find('span', id='ctl00_PageContent_lbl_Applic_Name')
-        
         name_list.append(name.text.strip())
+
         driver.back()
         driver.back()
 
@@ -207,3 +220,8 @@ def scraper(startdate, enddate):
     # Close the browser window
     driver.quit()
     return data
+
+
+
+
+        
