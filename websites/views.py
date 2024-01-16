@@ -41,9 +41,6 @@ def test(request):
 
         # Open the Google Spreadsheet using its title
         # Set up the credentials
-        # my_list = [('one', 'ethan'), ('two', 'wicks'), ('three', 'ofrm')]
-
-        # Set up the credentials
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
         creds = ServiceAccountCredentials.from_json_keyfile_name("/Users/ethanwicks/Desktop/credentials.json", scope)
         client = gspread.authorize(creds)
@@ -73,8 +70,6 @@ def test(request):
         # Close the connection
         creds = None
 
-
-
         context = {
             'my_list': my_list,
         }
@@ -101,9 +96,6 @@ def richmond(request):
         'dateform': dateform,
     }
     return render(request, 'richmond.html', context)
-
-
-
 
 
 def convert(s):
@@ -139,6 +131,8 @@ def scraper(startdate, enddate, wordlist):
     parsed_enddate = pd.to_datetime(enddate, format='%Y/%m/%d')
     reversed_startdate = parsed_startdate.strftime('%d/%m/%Y')
     reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
+    print(reversed_startdate)
+    print(reversed_enddate)
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
     driver = webdriver.Chrome()
@@ -192,10 +186,10 @@ def scraper(startdate, enddate, wordlist):
     else:
         print('Number of results for this search is: ' + num_results.text)
 
-
-
     searchResultsPage = soup.find('ul', class_='planning-apps')
     searchResults = searchResultsPage.find_all('li')
+
+    row_list = []
 
     # search the description but append all rows with key words in description to row_list
     for row in searchResults:
@@ -205,7 +199,7 @@ def scraper(startdate, enddate, wordlist):
         if (re.search(words_search_for, address_desc, flags=re.I)):
             row_list.append(row)
     
-
+    print(len(row_list))
     for row in row_list:
         # Find the address and add to address_list
         address_div = row.find('h3')
