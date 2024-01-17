@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <style>
+  
+      .item-row{
+      background-color: #272b2b;
+      padding: 10px;
+      gap: 10px;
+      margin: 5px;
+      border-radius: 30px;
+      color: #fff;
+      font-size: 16px;
+      box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.75);
+    }
+  
+      a {
+          text-decoration: none;
+      }
+  </style>
+
+    <div class="h-100 text-center container-fluid">
+        <h1 class="my-5">Richmond Council Website</h1>
+      <div class="d-flex justify-content-center align-items-center ">
+       
+          <form method="POST" action="">
+            {% csrf_token %}
+
+            {{ form }}
+
+            <button class="btn btn-info">Submit</button> 
+
+        </form>
+        
+
+      </div>
+      <div style="height: 100px;" class=" w-100 h-100 d-flex justify-content-center align-items-center w-100 my-5 ">
+        <div class="col-12 col-md-6 col-lg-4 w-35">
+          {% for word in words %}
+          <div class="item-row">
+            <span>{{word}}</span>
+          </div>
+          {% endfor %}
+        </div>
+        
+        </div>
+        <form method="POST" action="{% url 'test' %}">
+          {% csrf_token %}
+          {{ dateform.as_p }}
+
+          <input class="btn btn-info" type="submit" name="date" required>
+
+      </form>
+    </div>
+
+    <script
+      src="https://kit.fontawesome.com/b2fe83387a.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
