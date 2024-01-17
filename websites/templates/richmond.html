@@ -27,13 +27,17 @@
     }
   
   
-      i {
-          color: #fff !important;
-      }
-  
-      a {
-          text-decoration: none;
-      }
+    i {
+      color: #fff !important;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    input {
+      border: 2px red solid;
+    }
   </style>
 
     <div class="h-100 text-center container-fluid">
@@ -62,10 +66,10 @@
         </div>
         
         </div>
-        <form method="POST" action="{% url 'test' %}">
+        <form method="POST" action="{% url 'results' %}">
           {% csrf_token %}
           {{ dateform.as_p }}
-
+          <input type="hidden" name="borough" value="richmond">
 
           <input class="btn btn-info" type="submit" name="date" required>
 

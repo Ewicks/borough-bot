@@ -6,82 +6,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
 
-</head>
-<body>
     <style>
-        @import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css');
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
-
-
+        @import url('https://fonts.googleapis.com/css2?family=Gruppo&display=swap');
         body {
-            background-color: black;
-            font-family: 'Montserrat', sans-serif;
+            background-color: #fcf6f4;
+            font-family: 'Gruppo', sans-serif;
         }
 
-        h1{
-            color: DADADA;
-        }
-    
-        .link{
-            background-color: #272b2b;
-            border-radius: 30px;
-            padding: 10px 20px;
-            margin: 10px;
-            background-color: #DADADA;
+        .h1 {
+            font-size: 50px;
             color: black;
-            font-size: 15px;
-            box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.75);
         }
-    
-    
+
+        .title {
+            color: black !important;
+        }
+
+        .link {
+            padding: 20px 50px;
+            color: black;
+            font-size: 30px;
+        }
+
         a {
             text-decoration: none;
-            border: 2px black solid;
+
         }
 
         a:hover {
-            background-color: black;
-            color:#DADADA;
-            border: 2px #DADADA solid;
+            color:gray;
+        }
+
+        .atags {
+            padding: 20px;
+            margin: 5px;
+            letter-spacing: 2px;
+        }
+
+        .atags:after {
+            content: ""; /* This is necessary for the pseudo element to work. */ 
+            display: block; /* This will put the pseudo element on its own line. */
+            margin: 0 auto; /* This will center the border. */
+            width: 70%; /* Change this to whatever width you want. */
+            padding-top: 20px; /* This creates some space between the element and the border. */
+            border-bottom: 1px solid black; /* This creates the border. Replace black with whatever color you want. */
+        }
+
+        .atags:last-child:after {
+            display: none;
         }
 
         .bg-border {
             border: 3px solid;
             margin: 20px;
             color: #DADADA;
-            border-radius: 30px;
         }
-    </style>
+
+        .border-right {
+            border-right: 1px gray solid;
+        }
+
     
+
+        
+    </style>
+</head>
+<body>
     <div class="bg-border">
         <div class="container">
-            <h1 class="text-center mt-5">Borough Bot Search</h1>
             <div class="row d-flex align-items-center">
-                <div class="col align-self-center">
+                <div class="col-2 align-self-center">
                     <div class="my-5 p-5 text-center d-flex flex-column fw-bold">
-                        <a type="button" class="link" href="{% url 'richmond' %}?button_name=richmond">richmond</a>
-                        <a type="button" class="link" href="kingston">Kingston</a>
-                        <a type="button" class="link" href="richmond">richmond</a>
-                        <a type="button" class="link" href="richmond">richmond</a>
-                        <a type="button" class="link" href="richmond">richmond</a>
+                        <h1 class="title">Borough Bot Search</h1>
                     </div>
                 </div>
                 <div class="col align-self-center">
                     <div class="my-5 p-5 text-center d-flex flex-column fw-bold">
-                        <a type="button" class="link" href="richmond">richmond</a>
-                        <a type="button" class="link" href="richmond">richmond</a>
-                        <a type="button" class="link" href="richmond">richmond</a>
-                        <a type="button" class="link" href="richmond">richmond</a>
-                        <a type="button" class="link" href="richmond">richmond</a>
+                        <div class="row">
+                            <div class="col">
+                                <div class="atags">
+                                    <a type="button" class="link border-right" href="{% url 'richmond' %}">Richmond</a>
+                                    <a type="button" class="link" href="{% url 'kingston' %}">Kingston</a>
+                                </div>
+                                <div class="atags">
+                                    <a type="button" class="link border-right" href="{% url 'richmond' %}">Richmond</a>
+                                    <a type="button" class="link" href="{% url 'kingston' %}">Kingston</a>
+                                </div>
+                                <div class="atags">
+                                    <a type="button" class="link border-right" href="{% url 'richmond' %}">Richmond</a>
+                                    <a type="button" class="link" href="{% url 'kingston' %}">Kingston</a>
+                                </div>
+                                <div class="atags">
+                                    <a type="button" class="link border-right" href="{% url 'richmond' %}">Richmond</a>
+                                    <a type="button" class="link" href="{% url 'kingston' %}">Kingston</a>
+                                </div>
+                                <div class="atags">
+                                    <a type="button" class="link border-right" href="{% url 'richmond' %}">Richmond</a>
+                                    <a type="button" class="link" href="{% url 'kingston' %}">Kingston</a>
+                                </div>
+                               
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-       
-        
     </div>
-
-   
 </body>
 </html>

@@ -62,7 +62,7 @@ def kingston(request):
 
 
 
-def test(request):
+def results(request):
     if request.method == 'POST':
         datesdict = request.POST.dict()
         startdate = datesdict['startdate']
@@ -73,10 +73,14 @@ def test(request):
         borough = request.POST.get('borough')
         print(borough)
 
+
+
         if borough == 'richmond':
             my_list = richmond_bot(startdate, enddate, wordlist)
-        else:
+        if borough == 'kingston':
             my_list = kingston_bot(startdate, enddate, wordlist)
+        else:
+            print('else')
        
         # my_list = richmond_bot(startdate, enddate, wordlist)
 
@@ -115,6 +119,6 @@ def test(request):
             'my_list': my_list,
         }
 
-        return render(request, 'test.html', context)
+        return render(request, 'results.html', context)
 
 

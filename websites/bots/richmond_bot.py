@@ -33,7 +33,6 @@ def richmond_bot(startdate, enddate, wordlist):
     address_list = []
     name_list = []
     data = []
-    data = []
    
     words = convert(wordlist)
     words_search_for = words.rstrip(words[-1])

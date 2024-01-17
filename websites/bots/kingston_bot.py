@@ -25,14 +25,13 @@ def convert(s):
 
 def kingston_bot(startdate, enddate, wordlist):
 
-    # lists
+    words = convert(wordlist)
+    words_search_for = words.rstrip(words[-1])
+
     row_list = []
     address_list = []
     name_list = []
     data = []
-
-    words = convert(wordlist)
-    words_search_for = words.rstrip(words[-1])
 
     parsed_startdate = pd.to_datetime(startdate, format='%Y/%m/%d')
     parsed_enddate = pd.to_datetime(enddate, format='%Y/%m/%d')
