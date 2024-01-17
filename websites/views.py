@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
-from .bots.richmond_script import richmond_scraper
+from .bots.richmond_bot import richmond_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -19,13 +19,59 @@ def get_word_objects():
 
 	return objectlist
 
+
+def richmond(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+
+    if request.method == 'POST':
+        print(request.POST)
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('richmond')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'richmond.html', context)
+
+def kingston(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+
+    if request.method == 'POST':
+        print(request.POST)
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('richmond')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'kingston.html', context)
+
+
+
 def test(request):
     if request.method == 'POST':
         datesdict = request.POST.dict()
         startdate = datesdict['startdate']
         enddate = datesdict['enddate']
         wordlist = get_word_objects()
-        my_list = richmond_scraper(startdate, enddate, wordlist)
+
+        my_list = richmond_bot(startdate, enddate, wordlist)
 
         # Open the Google Spreadsheet using its title
         # Set up the credentials
@@ -64,25 +110,4 @@ def test(request):
 
         return render(request, 'test.html', context)
 
-
-def richmond(request):
-    words = Word.objects.all()
-    form = WordForm()
-    dateform = DateForm()
-
-
-    if request.method == 'POST':
-        print(request.POST)
-        form = WordForm(request.POST or None)
-        if form.is_valid():
-            print(form)
-            form.save()
-        return redirect('richmond')
-
-    context = {
-        'form': form,
-        'words': words,
-        'dateform': dateform,
-    }
-    return render(request, 'richmond.html', context)
 

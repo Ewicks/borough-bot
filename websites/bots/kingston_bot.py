@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import Select
 import re
 
 
-def richmond_scraper(startdate, enddate, wordlist):
+def kingston_bot(startdate, enddate, wordlist):
 
     def format_address(addresss):
         formatted_address = addresss.replace('\n', ' ')
