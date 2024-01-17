@@ -14,6 +14,12 @@
   </head>
   <body>
     <style>
+       @import url('https://fonts.googleapis.com/css2?family=Gruppo&display=swap');
+        body {
+            background-color: white;
+            color: black;
+            font-family: 'Gruppo', sans-serif;
+        }
   
       .item-row{
       background-color: #272b2b;
@@ -34,13 +40,50 @@
     a {
       text-decoration: none;
     }
-
-    input {
-      border: 2px red solid;
+    
+    #word-input::-webkit-input-placeholder::before {
+      color:black;
+      content:"Line 1";
     }
+  
+
+    
   </style>
 
-    <div class="h-100 text-center container-fluid">
+  <div class="container-fluid h-100">
+    <h1 class="my-5 text-center">Richmond Council</h1>
+    <div class="row">
+      <div class="col">
+        <div style="height: 100px;" class=" w-100 h-100 d-flex justify-content-center align-items-center w-100 my-5 ">
+          <div class="col-12 col-md-6 col-lg-4 w-35">
+            <form method="POST" action="">
+              {% csrf_token %}
+              {{ form }}
+              <input id="word-input" type="hidden" name="borough" value="richmond">
+              <button class="btn btn-info">Submit</button> 
+            </form>
+            {% for word in words %}
+            <div class="item-row">
+              <span>{{word}}</span>
+            </div>
+            {% endfor %}
+          </div>
+          
+          </div>
+          <form method="POST" action="{% url 'results' %}">
+            {% csrf_token %}
+            {{ dateform.as_p }}
+            <input type="hidden" name="borough" value="richmond">
+  
+            <input class="btn btn-info" type="submit" name="date" required>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> 
+
+    <!-- <div class="h-100 text-center container-fluid">
         <h1 class="my-5">Richmond Council Website</h1>
       <div class="d-flex justify-content-center align-items-center ">
 
