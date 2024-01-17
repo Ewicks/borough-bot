@@ -40,16 +40,15 @@
         <h1 class="my-5">Richmond Council Website</h1>
       <div class="d-flex justify-content-center align-items-center ">
 
-        <input type="hidden" name="source_page" value="richmond">
-       
           <form method="POST" action="">
             {% csrf_token %}
 
             {{ form }}
+            <input type="hidden" name="borough" value="richmond">
 
             <button class="btn btn-info">Submit</button> 
 
-        </form>
+          </form>
         
 
       </div>
@@ -66,6 +65,7 @@
         <form method="POST" action="{% url 'test' %}">
           {% csrf_token %}
           {{ dateform.as_p }}
+
 
           <input class="btn btn-info" type="submit" name="date" required>
 

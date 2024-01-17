@@ -32,13 +32,15 @@
   </style>
 
     <div class="h-100 text-center container-fluid">
-        <h1 class="my-5">Richmond Council Website</h1>
+        <h1 class="my-5">Kingston Council Website</h1>
       <div class="d-flex justify-content-center align-items-center ">
        
           <form method="POST" action="">
             {% csrf_token %}
 
             {{ form }}
+            <input type="hidden" name="borough" value="kingston">
+
 
             <button class="btn btn-info">Submit</button> 
 

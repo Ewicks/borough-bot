@@ -2,12 +2,10 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from .bots.richmond_bot import richmond_bot
+from .bots.kingston_bot import kingston_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-
-# Fix bugs, get the rows to be searched by word for just the description not everything like the address
-# fix data
 
 # Create your views here.
 def home(request):
@@ -20,14 +18,13 @@ def get_word_objects():
 	return objectlist
 
 
+
 def richmond(request):
     words = Word.objects.all()
     form = WordForm()
     dateform = DateForm()
 
-
     if request.method == 'POST':
-        print(request.POST)
         form = WordForm(request.POST or None)
         if form.is_valid():
             print(form)
@@ -64,14 +61,24 @@ def kingston(request):
 
 
 
+
 def test(request):
     if request.method == 'POST':
         datesdict = request.POST.dict()
         startdate = datesdict['startdate']
         enddate = datesdict['enddate']
         wordlist = get_word_objects()
+        print(request.POST)
+        # borough = ''
+        borough = request.POST.get('borough')
+        print(borough)
 
-        my_list = richmond_bot(startdate, enddate, wordlist)
+        if borough == 'richmond':
+            my_list = richmond_bot(startdate, enddate, wordlist)
+        else:
+            my_list = kingston_bot(startdate, enddate, wordlist)
+       
+        # my_list = richmond_bot(startdate, enddate, wordlist)
 
         # Open the Google Spreadsheet using its title
         # Set up the credentials
