@@ -53,10 +53,25 @@
     padding: 4px 4px;
     }
 
-    button {
+    .search-btn {
       margin-left: 30px;
+      background-color: white;
+      
+
     }
 
+    .submit-btn {
+      background-color: #fff;
+    }
+
+    .back-btn {
+      background-color: black;
+      color: white !important;
+      margin: 20px;
+      text-align: center;
+      border: 2px white solid;
+      cursor: pointer;
+    }
    
 
     .item-row {
@@ -93,16 +108,33 @@
     p {
       margin: 0;
     }
+    #id_enddate {
+      margin-right: 10px;
 
-    .search-btn {
-      background-color: white;
-      
     }
+
+    
   </style>
 
   <div class="my-container">
     <div class="bg-border">
-      <h1 class="my-5 text-center">Richmond Council</h1>
+      <div class="row">
+        <div class="col d-flex justify-content-center align-items-center">
+          <a href="{% url 'home' %}" class="back-btn btn">Back</a>
+
+        </div>
+        <div class="col">
+          <h1 class="my-5 text-center">Richmond Council</h1>
+
+
+        </div>
+        <div class="col"></div>
+        
+
+    
+   
+      </div>
+   
       <div class="row">
         <div class="col">
           <div class="d-flex justify-content-center align-items-center my-5 ">
@@ -131,17 +163,18 @@
         </div>
       </div>
       <div class="row mt-5">
+        <div class="col"></div>
         <div class="col d-flex justify-content-center align-items-center">
-          <form method="POST" action="{% url 'results' %}">
-            <div class="d-flex my-3 justify-content-center">
-              {% csrf_token %}
-              {{ dateform.as_p }}
-              <input type="hidden" name="borough" value="richmond">
-              <button class="search-btn btn" type="submit" name="date"><b>Search</b></button>
-            </div>
-          </form>
+            <form method="POST" action="{% url 'results' %}" class="d-flex flex-column align-items-center">
+                {% csrf_token %}
+                {{ dateform.as_p }}
+                <input type="hidden" name="borough" value="richmond">
+            </form>
         </div>
-      </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="submit-btn btn mt-2" type="submit" name="date"><b>Search</b></button>
+        </div>
+    </div>
       
     </div>
    
