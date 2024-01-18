@@ -14,13 +14,13 @@
   </head>
   <body>
     <style>
-       @import url('https://fonts.googleapis.com/css2?family=Gruppo&display=swap');
-        body {
-            background-color: white;
-            color: black;
-            font-family: 'Gruppo', sans-serif;
-        }
-  
+      @import url('https://fonts.googleapis.com/css2?family=Gruppo&display=swap');
+      body {
+          background-color: black;
+          color: #e7e7e7;
+          font-family: 'Gruppo', sans-serif;
+      }
+
       .item-row{
       background-color: #272b2b;
       padding: 10px;
@@ -45,45 +45,114 @@
       color:black;
       content:"Line 1";
     }
-  
 
-    
+    input[type=text] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #e7e7e7;
+    padding: 4px 4px;
+    }
+
+    button {
+      margin-left: 30px;
+    }
+
+   
+
+    .item-row {
+      width: 30%;
+      border: 1px solid #4d171f; 
+      background-color: black;
+    }
+    .bg-border {
+      border: 1px #4d171f solid;
+      height: 100%;
+
+    }
+
+    .my-container {
+      height: 100vh;
+      padding: 20px;
+      width: 100%;
+    }
+
+    #id_enddate {
+      margin: 0px 20px;
+    }
+
+    #id_startdate {
+      margin: 0px 20px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .search-btn {
+      background-color: white;
+      
+    }
   </style>
 
-  <div class="container-fluid h-100">
-    <h1 class="my-5 text-center">Richmond Council</h1>
-    <div class="row">
-      <div class="col">
-        <div style="height: 100px;" class=" w-100 h-100 d-flex justify-content-center align-items-center w-100 my-5 ">
-          <div class="col-12 col-md-6 col-lg-4 w-35">
-            <form method="POST" action="">
-              {% csrf_token %}
-              {{ form }}
-              <input id="word-input" type="hidden" name="borough" value="richmond">
-              <button class="btn btn-info">Submit</button> 
-            </form>
-            {% for word in words %}
-            <div class="item-row">
-              <span>{{word}}</span>
+  <div class="my-container">
+    <div class="bg-border">
+      <h1 class="my-5 text-center">Richmond Council</h1>
+      <div class="row">
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center my-5 ">
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="my-5">
+                <form method="POST" action="">
+                  <div class="d-flex justify-content-center">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input id="word-input" type="hidden" name="borough" value="richmond">
+                    <button class="search-btn btn">Submit</button> 
+                  </div>
+                </form>
+              </div>
+              <div class="d-flex justify-content-evenly">
+                {% for word in words %}
+                <div class="item-row">
+                  <span>{{word}}</span>
+                </div>
+                {% endfor %}
+              </div>
+              
+             
             </div>
-            {% endfor %}
           </div>
-          
-          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col d-flex justify-content-center align-items-center">
           <form method="POST" action="{% url 'results' %}">
-            {% csrf_token %}
-            {{ dateform.as_p }}
-            <input type="hidden" name="borough" value="richmond">
-  
-            <input class="btn btn-info" type="submit" name="date" required>
-  
+            <div class="d-flex my-3 justify-content-center">
+              {% csrf_token %}
+              {{ dateform.as_p }}
+              <input type="hidden" name="borough" value="richmond">
+              <button class="search-btn btn" type="submit" name="date"><b>Search</b></button>
+            </div>
           </form>
         </div>
       </div>
+      
     </div>
+   
   </div> 
 
-    <!-- <div class="h-100 text-center container-fluid">
+  <script
+    src="https://kit.fontawesome.com/b2fe83387a.js"
+    crossorigin="anonymous">
+  </script>
+  </body>
+</html>
+
+
+
+
+
+<!-- <div class="h-100 text-center container-fluid">
         <h1 class="my-5">Richmond Council Website</h1>
       <div class="d-flex justify-content-center align-items-center ">
 
@@ -118,10 +187,3 @@
 
       </form>
     </div>
-
-    <script
-      src="https://kit.fontawesome.com/b2fe83387a.js"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
