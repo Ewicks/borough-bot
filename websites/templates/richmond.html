@@ -20,7 +20,7 @@
           color: #e7e7e7;
           font-family: 'Gruppo', sans-serif;
       }
-
+      
       .item-row{
       background-color: #272b2b;
       padding: 10px;
@@ -30,97 +30,104 @@
       color: #fff;
       font-size: 16px;
       box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.75);
-    }
+      }
   
   
-    i {
-      color: #fff !important;
-    }
+      i {
+        color: #fff !important;
+      }
 
-    a {
-      text-decoration: none;
-    }
-    
-    #word-input::-webkit-input-placeholder::before {
-      color:black;
-      content:"Line 1";
-    }
-
-    input[type=text] {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #e7e7e7;
-    padding: 4px 4px;
-    color: white;
-    }
-
-    .search-btn {
-      margin-left: 30px;
-      background-color: white;
+      a {
+        text-decoration: none;
+      }
       
+      #word-input::-webkit-input-placeholder::before {
+        color:black;
+        content:"Line 1";
+      }
 
-    }
+      input[type=text] {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #e7e7e7;
+      padding: 4px 4px;
+      color: white;
+      }
 
-    .submit-btn {
-      background-color: #fff;
-    }
+      .search-btn {
+        margin-left: 30px;
+        background-color: white;
+        
 
-    .back-btn {
-      background-color: black;
-      color: white !important;
-      margin: 20px;
-      text-align: center;
-      border: 2px white solid;
-      cursor: pointer;
-    }
-   
+      }
 
-    .item-row {
-      width: 30%;
-      border: 1px solid #4d171f; 
-      background-color: black;
-    }
-    .bg-border {
-      border: 1px #4d171f solid;
-      height: 100%;
+      .submit-btn {
+        background-color: #fff;
+      }
 
-    }
+      .back-btn {
+        background-color: black;
+        color: white !important;
+        margin: 20px;
+        text-align: center;
+        border: 2px white solid;
+        cursor: pointer;
+      }
+    
 
-    .my-container {
-      height: 100vh;
-      padding: 20px;
-      width: 100%;
-    }
+      .item-row {
+        width: 30%;
+        border: 1px solid #4d171f; 
+        background-color: black;
+      }
+      .bg-border {
+        border: 1px #4d171f solid;
+        height: 100%;
 
-    #id_enddate {
-      margin: 0px 20px;
-      background-color: black;
-      color: #e7e7e7;
-      border: 1px #e7e7e7 solid;
-    }
+      }
 
-    #id_startdate {
-      margin: 0px 20px;
-      background-color: black;
-      color: #e7e7e7;
-      border: 1px #e7e7e7 solid;
-    }
+      .my-container {
+        height: 100vh;
+        padding: 20px;
+        width: 100%;
+      }
 
-    p {
-      margin: 0;
-    }
-    #id_enddate {
-      margin-right: 10px;
-    }
+      #id_enddate {
+        margin: 0px 20px;
+        background-color: black;
+        color: #e7e7e7;
+        border: 1px #e7e7e7 solid;
+      }
 
-    /* input:-internal-autofill-selected {
-      background-color: black !important;
-    } */
+      #id_startdate {
+        margin: 0px 20px;
+        background-color: black;
+        color: #e7e7e7;
+        border: 1px #e7e7e7 solid;
+      }
 
-   
+      p {
+        margin: 0;
+      }
+      #id_enddate {
+        margin-right: 10px;
+      }
+
+      /* input:-internal-autofill-selected {
+        background-color: black !important;
+      } */
+
+      .test {
+        background-color: white;
+        /* background-color: rgba(0,0,0,0.5); */
+        position:fixed;
+        height: 100vh;
+        width: 100%;
+        z-index: 1000;
+      }
 
     
-  </style>
+    </style>
 
   <div class="my-container">
     <div class="bg-border">
@@ -161,17 +168,26 @@
         </div>
       </div>
       <div class="row mt-5">
-        <div class="col"></div>
-        <div class="col d-flex justify-content-center align-items-center">
+        <!-- <div class="col"></div> -->
+        <!-- <div class="col d-flex justify-content-center align-items-center"> -->
             <form method="POST" action="{% url 'results' %}" class="d-flex flex-column align-items-center">
                 {% csrf_token %}
-                {{ dateform.as_p }}
+                <div class="row">
+                  <div class="col"></div>
+                  <div class="col d-flex justify-content-center align-items-center">
+                    {{ dateform.as_p }}
+                  </div>
+                  <div class="col">
+                    <button class="submit-btn btn mt-2" type="submit" name="date">Search</button>
+
+                  </div>
+                </div>
                 <input type="hidden" name="borough" value="richmond">
+
             </form>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center">
-          <button class="submit-btn btn mt-2" type="submit" name="date"><b>Search</b></button>
-        </div>
+        <!-- </div> -->
+        <!-- <div class="col d-flex justify-content-center align-items-center">
+        </div> -->
     </div>
       
     </div>
@@ -181,46 +197,18 @@
   <script
     src="https://kit.fontawesome.com/b2fe83387a.js"
     crossorigin="anonymous">
+
+
+    
+
+  </script>
+  <script>
+    function loading() {
+      document.body.classList.add('test');
+    }
   </script>
   </body>
 </html>
 
 
 
-
-
-<!-- <div class="h-100 text-center container-fluid">
-        <h1 class="my-5">Richmond Council Website</h1>
-      <div class="d-flex justify-content-center align-items-center ">
-
-          <form method="POST" action="">
-            {% csrf_token %}
-
-            {{ form }}
-            <input type="hidden" name="borough" value="richmond">
-
-            <button class="btn btn-info">Submit</button> 
-
-          </form>
-        
-
-      </div>
-      <div style="height: 100px;" class=" w-100 h-100 d-flex justify-content-center align-items-center w-100 my-5 ">
-        <div class="col-12 col-md-6 col-lg-4 w-35">
-          {% for word in words %}
-          <div class="item-row">
-            <span>{{word}}</span>
-          </div>
-          {% endfor %}
-        </div>
-        
-        </div>
-        <form method="POST" action="{% url 'results' %}">
-          {% csrf_token %}
-          {{ dateform.as_p }}
-          <input type="hidden" name="borough" value="richmond">
-
-          <input class="btn btn-info" type="submit" name="date" required>
-
-      </form>
-    </div>
