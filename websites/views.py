@@ -6,6 +6,7 @@ from .bots.kingston_bot import kingston_bot
 from .bots.woking_bot import woking_bot
 from .bots.southwark_bot import southwark_bot
 from .bots.guildford_bot import guildford_bot
+from .bots.epsom_bot import epsom_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -40,6 +41,25 @@ def richmond(request):
         'dateform': dateform,
     }
     return render(request, 'richmond.html', context)
+
+def epsom(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+    if request.method == 'POST':
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('epsom')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'epsom.html', context)
 
 def woking(request):
     words = Word.objects.all()
@@ -152,10 +172,8 @@ def results(request):
         enddate = datesdict['enddate']
         wordlist = get_word_objects()
         print(request.POST)
-        # borough = ''
         borough = request.POST.get('borough')
         print(borough)
-
 
 
         if borough == 'richmond':
@@ -168,10 +186,9 @@ def results(request):
             my_list = southwark_bot(startdate, enddate, wordlist)
         if borough == 'guildford':
             my_list = guildford_bot(startdate, enddate, wordlist)
+        if borough == 'epsom':
+            my_list = epsom_bot(startdate, enddate, wordlist)
 
-        
-       
-        # my_list = richmond_bot(startdate, enddate, wordlist)
 
         # Open the Google Spreadsheet using its title
         # Set up the credentials
