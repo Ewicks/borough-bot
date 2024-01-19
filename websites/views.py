@@ -7,6 +7,7 @@ from .bots.woking_bot import woking_bot
 from .bots.southwark_bot import southwark_bot
 from .bots.guildford_bot import guildford_bot
 from .bots.epsom_bot import epsom_bot
+from .bots.lewisham_bot import lewisham_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -79,6 +80,25 @@ def woking(request):
         'dateform': dateform,
     }
     return render(request, 'woking.html', context)
+
+def lewisham(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+    if request.method == 'POST':
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('lewisham')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'lewisham.html', context)
 
 def elmbridge(request):
     words = Word.objects.all()
@@ -188,6 +208,8 @@ def results(request):
             my_list = guildford_bot(startdate, enddate, wordlist)
         if borough == 'epsom':
             my_list = epsom_bot(startdate, enddate, wordlist)
+        if borough == 'lewisham':
+            my_list = lewisham_bot(startdate, enddate, wordlist)
 
 
         # Open the Google Spreadsheet using its title

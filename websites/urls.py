@@ -10,5 +10,6 @@ urlpatterns = [
     path('guildford/', views.guildford, name='guildford'),
     path('spsom/', views.epsom, name='epsom'),
     path('woking/', views.woking, name='woking'),
+    path('lewisham/', views.lewisham, name='lewisham'),
     path('results', views.results, name='results'),
 ]
