@@ -5,6 +5,7 @@ from .bots.richmond_bot import richmond_bot
 from .bots.kingston_bot import kingston_bot
 from .bots.woking_bot import woking_bot
 from .bots.southwark_bot import southwark_bot
+from .bots.guildford_bot import guildford_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -120,6 +121,27 @@ def southwark(request):
     }
     return render(request, 'southwark.html', context)
 
+def guildford(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+
+    if request.method == 'POST':
+        print(request.POST)
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('guildford')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'guildford.html', context)
+
 
 
 
@@ -144,6 +166,8 @@ def results(request):
             my_list = woking_bot(startdate, enddate, wordlist)
         if borough == 'southwark':
             my_list = southwark_bot(startdate, enddate, wordlist)
+        if borough == 'guildford':
+            my_list = guildford_bot(startdate, enddate, wordlist)
 
         
        
