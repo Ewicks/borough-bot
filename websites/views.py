@@ -3,6 +3,8 @@ from .models import *
 from .forms import *
 from .bots.richmond_bot import richmond_bot
 from .bots.kingston_bot import kingston_bot
+from .bots.woking_bot import woking_bot
+from .bots.southwark_bot import southwark_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -38,6 +40,44 @@ def richmond(request):
     }
     return render(request, 'richmond.html', context)
 
+def woking(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+    if request.method == 'POST':
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('woking')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'woking.html', context)
+
+def elmbridge(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+    if request.method == 'POST':
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('elmbridge')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'elmbridge.html', context)
+
 def kingston(request):
     words = Word.objects.all()
     form = WordForm()
@@ -50,7 +90,7 @@ def kingston(request):
         if form.is_valid():
             print(form)
             form.save()
-        return redirect('richmond')
+        return redirect('kingston')
 
     context = {
         'form': form,
@@ -58,6 +98,27 @@ def kingston(request):
         'dateform': dateform,
     }
     return render(request, 'kingston.html', context)
+
+def southwark(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+
+    if request.method == 'POST':
+        print(request.POST)
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('southwark')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'southwark.html', context)
 
 
 
@@ -79,8 +140,12 @@ def results(request):
             my_list = richmond_bot(startdate, enddate, wordlist)
         if borough == 'kingston':
             my_list = kingston_bot(startdate, enddate, wordlist)
-        else:
-            print('else')
+        if borough == 'woking':
+            my_list = woking_bot(startdate, enddate, wordlist)
+        if borough == 'southwark':
+            my_list = southwark_bot(startdate, enddate, wordlist)
+
+        
        
         # my_list = richmond_bot(startdate, enddate, wordlist)
 

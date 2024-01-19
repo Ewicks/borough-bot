@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kingston Borough</title>
+    <title>Southwark Borough</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -130,7 +130,7 @@
 
         </div>
         <div class="col">
-          <h1 class="my-5 text-center">Kingston Council</h1>
+          <h1 class="my-5 text-center">Southwark Council</h1>
         </div>
         <div class="col"></div>
       </div>
@@ -144,7 +144,7 @@
                   <div class="d-flex justify-content-center">
                     {% csrf_token %}
                     {{ form }}
-                    <input id="word-input" type="hidden" name="borough" value="kingston">
+                    <input id="word-input" type="hidden" name="borough" value="southwark">
                     <button class="search-btn btn">Submit</button> 
                   </div>
                 </form>
@@ -168,7 +168,7 @@
                 {{ dateform.as_p }}
                 <button class="submit-btn btn mt-2" type="submit" name="date"><b>Search</b></button>
 
-                <input type="hidden" name="borough" value="kingston">
+                <input type="hidden" name="borough" value="southwark">
             </form>
         </div>
         <div class="col d-flex justify-content-center align-items-center">
