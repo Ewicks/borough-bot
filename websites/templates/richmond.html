@@ -8,7 +8,7 @@
       </div>
       <div class="col">
         <h1 class="mt-5 text-center">Richmond Council</h1>
-        <h1 class="text-center gradient-text">Enter details here </h1>
+        <h1 class="text-center gradient-text">Enter details here</h1>
       </div>
       <div class="col"></div>
     </div>
@@ -21,7 +21,7 @@
               <form method="POST" action="">
                 <div class="d-flex justify-content-center">
                   {% csrf_token %} {{ form }}
-                    <input
+                  <input
                     id="word-inputt"
                     type="hidden"
                     name="borough"
@@ -34,9 +34,12 @@
             <div class="d-flex justify-content-evenly">
               {% for word in words %}
               <div class="item-row">
-                <a class="mx-1 text-decoration" href="{% url 'deleteword' pk=word.id redirect_to='richmond' %}">
+                <a
+                  class="mx-1 text-decoration"
+                  href="{% url 'deleteword' pk=word.id redirect_to='richmond' %}"
+                >
                   <i class="fa-solid fa-xmark"></i>
-                </a>                
+                </a>
                 <span>{{word}}</span>
               </div>
               {% endfor %}
@@ -46,27 +49,24 @@
       </div>
     </div>
     <div class="row mt-5">
-      <form
-        method="POST"
-        action="{% url 'results' %}"
-        class="d-flex flex-column align-items-center"
-      >
-        {% csrf_token %}
-        <div class="row">
-          <div class="col"></div>
-          <div class="col d-flex justify-content-center align-items-center">
-            <div class="input-container">
-            {{ dateform.as_p }}
-            </div>
+      <div class="col">
+        <form
+          method="POST"
+          action="{% url 'results' %}"
+          class="d-flex flex-column align-items-center"
+        >
+          {% csrf_token %}
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="input-container">{{ dateform.as_p }}</div>
           </div>
-          <div class="col">
-            <button class="submit-btn btn mt-2" type="submit" name="date">
+          <div class="d-flex justify-content-end mt-2">
+            <button class="submit-btn btn" type="submit" name="date">
               Search
             </button>
           </div>
-        </div>
-        <input type="hidden" name="borough" value="richmond" />
-      </form>
+          <input type="hidden" name="borough" value="richmond" />
+        </form>
+      </div>
     </div>
   </div>
 </div>

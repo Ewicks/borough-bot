@@ -15,7 +15,6 @@ body {
     position: relative;
     padding-bottom: 5em; /* Height of footer */
     min-height: 100vh;
-    background: black;
 }
 
 footer {
@@ -78,7 +77,6 @@ a {
         padding: min(30vh, 10rem) 2em;
         background: hsl(0 0% 100% / 0.1);
         backdrop-filter: blur(.5em);
-        background-color: lightblue;
         z-index: 1000;
         transform: translateX(100%);
         transition: transform 350ms ease-out;
@@ -180,7 +178,7 @@ label {
 }
 
 
-/* Elmbridge page */
+/* pages */
 
 .input-container {
     display: flex;
@@ -213,8 +211,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .gradient-text {
-    /* Fallback: Set a background color. */
-    /* background-color: rgb(131, 31, 231); */
     font-weight: 600;
     
     /* Create the gradient. */
@@ -331,6 +327,7 @@ a {
 p {
     margin: 0;
 }
+
 #id_enddate {
     margin-right: 10px;
 }
@@ -355,4 +352,47 @@ table tbody tr {
 span {
     padding: 10px;
     margin: 10px;
+}
+
+.home-img {
+    height: 500px;
+    width: 100%;
+    background-repeat: repeat;
+}
+
+.bg-home {
+    background-color: #070B14;
+}
+
+.key-word {
+    /* background-color: rgb(131, 31, 231); */
+    font-weight: 600;
+    
+    /* Create the gradient. */
+    background-image: linear-gradient(45deg, rgb(138, 84, 255), rgb(147, 0, 255));
+    
+    /* Set the background size and repeat properties. */
+    background-size: 100%;
+    background-repeat: repeat;
+
+    /* Use the text as a mask for the background. */
+    /* This will show the gradient as a text color rather than element bg. */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+.home-btn {
+    color: white;
+    border: 2px solid rgb(138, 84, 255);
+    background-color: rgb(138, 84, 255);
+    border-radius: 10px;
+}
+.arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

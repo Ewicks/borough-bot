@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<div class="row bg-home">
+    <div class="col p-0 my-5 p-5 flex-column text-light d-flex justify-content-center align-items-start">
+        <h1>Unlock the<br><span class="key-word">Power of Data</span> for Your Business</h1>
+        <p>Borough bot search is your intelligent assistant for gathering valuable insights about potential clients. Our bot scours the web to provide you with comprehensive data on businesses, helping you make informed decisions and drive growth.</p>
+        <button class=" my-5 btn home-btn d-flex align-items-center justify-content-center">Get Started Here <span class="arrow"><i class="fa-solid fa-arrow-right "></i></span></button>
+
+    </div>
+    <div class="col p-0">
+        <img src="{% static 'images/business-growth.png' %}" class='home-img img-fluid' alt="">
+    </div>
+</div>
+
+
+<script
+  src="https://kit.fontawesome.com/b2fe83387a.js"
+  crossorigin="anonymous"
+></script>
+{% endblock %}
