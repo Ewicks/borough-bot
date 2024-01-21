@@ -353,7 +353,7 @@ span {
 }
 
 .home-img {
-    height: 500px;
+    height: 400px;
     width: 100%;
     background-repeat: repeat;
 }
@@ -398,9 +398,23 @@ span {
 
 
 .subtitle {
-    margin-right: 50%;
+    margin-right: 20%;
 }
 
 .fa-check {
     color: rgb(138, 84, 255) !important;
+    position: absolute;
+    top: 5px;
+    left: 0;
 }
+
+.p-margin {
+    margin-left: 30px;
+    margin-bottom: 20px;
+
+}
+
+.point {
+    position: relative;
+}
+
