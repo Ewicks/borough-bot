@@ -42,7 +42,9 @@ def woking_bot(startdate, enddate, wordlist):
     data = []
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
-    driver = webdriver.Chrome()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    driver = webdriver.Chrome(options=chrome_options)
 
     url = 'https://caps.woking.gov.uk/online-applications/search.do?action=advanced'
     driver.get(url)

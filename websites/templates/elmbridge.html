@@ -27,7 +27,7 @@
                     id="word-input"
                     type="hidden"
                     name="borough"
-                    value="richmond"
+                    value="elmbridge"
                   />
                   <button class="search-btn btn">Submit</button>
                 </div>
@@ -48,17 +48,21 @@
       <div class="col"></div>
       <div class="col d-flex justify-content-center align-items-center">
         <form
-          method="POST"
-          action="{% url 'results' %}"
-          class="d-flex flex-column align-items-center"
-        >
-          {% csrf_token %} {{ dateform.as_p }}
-          <button class="submit-btn btn mt-2" type="submit" name="date">
-            <b>Search</b>
+        method="POST"
+        action="{% url 'results' %}"
+        class="d-flex flex-column align-items-center"
+      >
+        {% csrf_token %}
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="input-container">{{ dateform.as_p }}</div>
+        </div>
+        <div class="d-flex justify-content-end mt-2">
+          <button class="submit-btn btn" type="submit" name="date">
+            Search
           </button>
-
-          <input type="hidden" name="borough" value="richmond" />
-        </form>
+        </div>
+        <input type="hidden" name="borough" value="elmbridge" />
+      </form>
       </div>
       <div class="col d-flex justify-content-center align-items-center"></div>
     </div>
