@@ -15,6 +15,7 @@ body {
     position: relative;
     padding-bottom: 5em; /* Height of footer */
     min-height: 100vh;
+    background: black;
 }
 
 footer {
@@ -246,18 +247,34 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 .item-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     background-color: #272b2b;
-    padding: 10px;
+    padding: 0px 20px;
     gap: 10px;
     margin: 5px;
     border-radius: 30px;
     color: #fff;
     font-size: 16px;
     box-shadow: 0px -1px 10px -4px rgba(0, 0, 0, 0.75);
+    width: 30%;
+    border: 1px solid #4d171f;
+    background-color: black;
+}
+
+.item-row a {
+    position: absolute;
+    top: 25px;
+    right: 19px;
+    margin: 0px 20px;
 }
 
 i {
     color: #fff !important;
+    position: absolute;
+
 }
 
 a {
@@ -284,11 +301,7 @@ a {
     cursor: pointer;
 }
 
-.item-row {
-    width: 30%;
-    border: 1px solid #4d171f;
-    background-color: black;
-}
+
 .bg-border {
     border: 1px #4d171f solid;
     height: 100%;

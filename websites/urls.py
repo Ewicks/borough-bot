@@ -13,4 +13,5 @@ urlpatterns = [
     path('lewisham/', views.lewisham, name='lewisham'),
     path('results', views.results, name='results'),
     path('test', views.test, name='test'),
+    path('deleteword/<int:pk>/<str:redirect_to>/', views.deleteword, name='deleteword'),
 ]

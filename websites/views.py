@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .models import *
 from .forms import *
 from .bots.richmond_bot import richmond_bot
@@ -24,6 +25,15 @@ def get_word_objects():
 
 def test(request):
     return render(request, 'test.html', {})
+
+
+def deleteword(request, pk, redirect_to):
+    word = Word.objects.get(id=pk)
+    word.delete()
+  
+    return redirect(reverse(redirect_to))
+
+
 
 def richmond(request):
     words = Word.objects.all()
