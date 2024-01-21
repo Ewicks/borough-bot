@@ -2,6 +2,24 @@
 body {
     background-color: #fcf6f4;
     font-family: 'Gruppo', sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    height: 100%;
+}
+
+.wrapper {
+    box-sizing: border-box;
+    position: relative;
+    padding-bottom: 1em; /* Height of footer */
+    min-height: 100vh;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    background-color: #000;
 }
 
 .logo {
@@ -10,7 +28,7 @@ body {
 
 .flex {
     display: flex;
-    gap: var(--gap, 2rem): 
+    gap: var(--gap, 2rem);
 }
 
 .primary-header {
@@ -37,6 +55,10 @@ a {
     margin-inline-end: 0.75em;
 }
 
+.mobile-nav-toggle {
+    display: none;
+}
+
 @media (max-width: 35em) {
     .primary-navigation {
         gap: 3rem;
@@ -48,11 +70,20 @@ a {
         backdrop-filter: blur(.5em);
         background-color: lightblue;
         z-index: 1000;
+        transform: translateX(100%);
+        transition: transform 350ms ease-out;
+    }
+
+    .primary-navigation[data-visable='true'] {
+        transform: translateX(0%);
+
     }
 
     .mobile-nav-toggle {
+        display: block;
         position: absolute;
-        background: url('../../static/images/menu.png');
+        border: 0;
+        background-color: #fcf6f4;
         width: 2rem;
         aspect-ratio: 1;
         top: 2rem;

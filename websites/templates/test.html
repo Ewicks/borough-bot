@@ -11,41 +11,73 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <header class="primary-header d-flex">
-        <div>
-            <h1 class="logo">test</h1>
-        </div>
+    <div class="wrapper">
+        <header class="primary-header d-flex mx-4">
+            <div>
+                <h1 class="logo">test</h1>
+            </div>
+    
+            <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
+                <i id="burgar-menu" class="fa-solid fa-bars"></i>
+                <span class="sr-only">Menu</span>
+            </button>
+    
+            <nav>
+                <ul id="primary-navigation" data-visable="false" class="primary-navigation flex m-0">
+                    <li class="active">
+                        <a href="">
+                            <span aria-hidden="true">00</span>Home
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="">
+                            <span aria-hidden="true">00</span>Home
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="">
+                            <span aria-hidden="true">00</span>Home
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="">
+                            <span aria-hidden="true">00</span>Home
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <h1 class="my-5">test</h1>
+        <footer class="">
+            <h1>test</h1>
+        </footer>
+    </div>
+    
 
-        <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
-            <span class="sr-only">Menu</span>
-        </button>
-
-        <nav>
-            <ul id="primary-navigation" data-visable="false" class="primary-navigation flex m-0">
-                <li class="active">
-                    <a href="">
-                        <span aria-hidden="true">00</span>Home
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="">
-                        <span aria-hidden="true">00</span>Home
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="">
-                        <span aria-hidden="true">00</span>Home
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="">
-                        <span aria-hidden="true">00</span>Home
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-    </header>
     <script src="https://kit.fontawesome.com/b2fe83387a.js" crossorigin="anonymous"></script>
+    {% block js %}
+    <script>
+        const primaryNav = document.querySelector('.primary-navigation');
+        const navToggle = document.querySelector('.mobile-nav-toggle');
+        const icon = document.querySelector('#burgar-menu');
+
+        navToggle.addEventListener('click', () => {
+            const visibility = primaryNav.getAttribute('data-visable')
+
+            if (visibility === 'false') {
+                icon.classList.replace('fa-bars', 'fa-xmark')
+                primaryNav.setAttribute('data-visable', true)
+                navToggle.setAttribute('aria-expanded', true)
+            } else if (visibility === 'true') {
+                icon.classList.replace('fa-xmark', 'fa-bars')
+                primaryNav.setAttribute('data-visable', false)
+                navToggle.setAttribute('aria-expanded', false)
+            }
+
+
+        })
+    </script>
+    {% endblock %}
+
 </body>
 </html>
