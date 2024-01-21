@@ -12,14 +12,15 @@
 </head>
 <body>
     <div class="wrapper">
-        <header class="primary-header d-flex mx-4">
+        <header class="primary-header d-flex px-4">
             <div>
-                <h1 class="logo">test</h1>
+                <a href="{% url 'home' %}">
+                    <h1 class="logo">test</h1>
+                </a>
             </div>
     
             <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
                 <i id="burgar-menu" class="fa-solid fa-bars"></i>
-                <span class="sr-only">Menu</span>
             </button>
     
             <nav>
@@ -55,7 +56,7 @@
         {% endblock content %}
 
 
-        
+
         <footer class="">
             <h1>test</h1>
         </footer>
@@ -69,6 +70,7 @@
         const navToggle = document.querySelector('.mobile-nav-toggle');
         const icon = document.querySelector('#burgar-menu');
 
+
         navToggle.addEventListener('click', () => {
             const visibility = primaryNav.getAttribute('data-visable')
 
@@ -80,9 +82,8 @@
                 icon.classList.replace('fa-xmark', 'fa-bars')
                 primaryNav.setAttribute('data-visable', false)
                 navToggle.setAttribute('aria-expanded', false)
+
             }
-
-
         })
     </script>
     {% endblock %}
