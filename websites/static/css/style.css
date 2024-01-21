@@ -4,6 +4,68 @@ body {
     font-family: 'Gruppo', sans-serif;
 }
 
+.logo {
+    margin: 2rem;
+}
+
+.flex {
+    display: flex;
+    gap: var(--gap, 2rem): 
+}
+
+.primary-header {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.primary-navigation {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.primary-navigation a {
+    text-decoration: none;
+}
+
+a {
+    color: black;
+}
+
+.ul, li, a > span {
+    font-weight: 700;
+    margin-inline-end: 0.75em;
+}
+
+@media (max-width: 35em) {
+    .primary-navigation {
+        gap: 3rem;
+        position: fixed;
+        inset: 0 0 0 30%;
+        flex-direction: column;
+        padding: min(30vh, 10rem) 2em;
+        background: hsl(0 0% 100% / 0.1);
+        backdrop-filter: blur(.5em);
+        background-color: lightblue;
+        z-index: 1000;
+    }
+
+    .mobile-nav-toggle {
+        position: absolute;
+        background: url('../../static/images/menu.png');
+        width: 2rem;
+        aspect-ratio: 1;
+        top: 2rem;
+        right: 2rem;
+        z-index: 9999;
+    }
+}
+
+
+
+
+
+
 .h1 {
     font-size: 50px;
     color: black;

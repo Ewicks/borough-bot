@@ -22,7 +22,8 @@ def get_word_objects():
 
 	return objectlist
 
-
+def test(request):
+    return render(request, 'test.html', {})
 
 def richmond(request):
     words = Word.objects.all()

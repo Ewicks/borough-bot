@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="primary-header d-flex">
+        <div>
+            <h1 class="logo">test</h1>
+        </div>
+
+        <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
+            <span class="sr-only">Menu</span>
+        </button>
+
+        <nav>
+            <ul id="primary-navigation" data-visable="false" class="primary-navigation flex m-0">
+                <li class="active">
+                    <a href="">
+                        <span aria-hidden="true">00</span>Home
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="">
+                        <span aria-hidden="true">00</span>Home
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="">
+                        <span aria-hidden="true">00</span>Home
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="">
+                        <span aria-hidden="true">00</span>Home
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+    <script src="https://kit.fontawesome.com/b2fe83387a.js" crossorigin="anonymous"></script>
+</body>
+</html>

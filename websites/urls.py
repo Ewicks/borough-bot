@@ -12,4 +12,5 @@ urlpatterns = [
     path('woking/', views.woking, name='woking'),
     path('lewisham/', views.lewisham, name='lewisham'),
     path('results', views.results, name='results'),
+    path('test', views.test, name='test'),
 ]
