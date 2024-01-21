@@ -1,214 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Richmond Borough</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Gruppo&display=swap');
-      body {
-          background-color: black;
-          color: #e7e7e7;
-          font-family: 'Gruppo', sans-serif;
-      }
-      
-      .item-row{
-      background-color: #272b2b;
-      padding: 10px;
-      gap: 10px;
-      margin: 5px;
-      border-radius: 30px;
-      color: #fff;
-      font-size: 16px;
-      box-shadow: 0px -1px 10px -4px rgba(0,0,0,0.75);
-      }
-  
-  
-      i {
-        color: #fff !important;
-      }
+{% extends "base.html" %} {% load static %} {% block content %}
 
-      a {
-        text-decoration: none;
-      }
-      
-      #word-input::-webkit-input-placeholder::before {
-        color:black;
-        content:"Line 1";
-      }
-
-      input[type=text] {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #e7e7e7;
-      padding: 4px 4px;
-      color: white;
-      }
-
-      .search-btn {
-        margin-left: 30px;
-        background-color: white;
-        
-
-      }
-
-      .submit-btn {
-        background-color: #fff;
-      }
-
-      .back-btn {
-        background-color: black;
-        color: white !important;
-        margin: 20px;
-        text-align: center;
-        border: 2px white solid;
-        cursor: pointer;
-      }
-    
-
-      .item-row {
-        width: 30%;
-        border: 1px solid #4d171f; 
-        background-color: black;
-      }
-      .bg-border {
-        border: 1px #4d171f solid;
-        height: 100%;
-
-      }
-
-      .my-container {
-        height: 100vh;
-        padding: 20px;
-        width: 100%;
-      }
-
-      #id_enddate {
-        margin: 0px 20px;
-        background-color: black;
-        color: #e7e7e7;
-        border: 1px #e7e7e7 solid;
-      }
-
-      #id_startdate {
-        margin: 0px 20px;
-        background-color: black;
-        color: #e7e7e7;
-        border: 1px #e7e7e7 solid;
-      }
-
-      p {
-        margin: 0;
-      }
-      #id_enddate {
-        margin-right: 10px;
-      }
-
-      /* input:-internal-autofill-selected {
-        background-color: black !important;
-      } */
-
-      .test {
-        background-color: white;
-        /* background-color: rgba(0,0,0,0.5); */
-        position:fixed;
-        height: 100vh;
-        width: 100%;
-        z-index: 1000;
-      }
-
-    
-    </style>
-
-  <div class="my-container">
-    <div class="bg-border">
-      <div class="row">
-        <div class="col d-flex justify-content-center align-items-center">
-          <a href="{% url 'home' %}" class="back-btn btn">Back</a>
-
-        </div>
-        <div class="col">
-          <h1 class="my-5 text-center">Richmond Council</h1>
-        </div>
-        <div class="col"></div>
+<div class="my-container">
+  <div class="bg-border">
+    <div class="row">
+      <div class="col d-flex justify-content-center align-items-center">
+        <a href="{% url 'home' %}" class="back-btn btn">Back</a>
       </div>
-   
-      <div class="row">
-        <div class="col">
-          <div class="d-flex justify-content-center align-items-center my-5 ">
-            <div class="col-12 col-md-6 col-lg-4">
-              <div class="my-5">
-                <form method="POST" action="">
-                  <div class="d-flex justify-content-center">
-                    {% csrf_token %}
-                    {{ form }}
-                    <input id="word-input" type="hidden" name="borough" value="richmond">
-                    <button class="search-btn btn">Submit</button> 
-                  </div>
-                </form>
-              </div>
-              <div class="d-flex justify-content-evenly">
-                {% for word in words %}
-                <div class="item-row">
-                  <span>{{word}}</span>
+      <div class="col">
+        <h1 class="my-5 text-center">Richmond Council</h1>
+      </div>
+      <div class="col"></div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="d-flex justify-content-center align-items-center my-5">
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="my-5">
+              <form method="POST" action="">
+                <div class="d-flex justify-content-center">
+                  {% csrf_token %} {{ form }}
+                  <input
+                    id="word-input"
+                    type="hidden"
+                    name="borough"
+                    value="richmond"
+                  />
+                  <button class="search-btn btn">Submit</button>
                 </div>
-                {% endfor %}
+              </form>
+            </div>
+            <div class="d-flex justify-content-evenly">
+              {% for word in words %}
+              <div class="item-row">
+                <span>{{word}}</span>
               </div>
+              {% endfor %}
             </div>
           </div>
         </div>
       </div>
-      <div class="row mt-5">
-        <!-- <div class="col"></div> -->
-        <!-- <div class="col d-flex justify-content-center align-items-center"> -->
-            <form method="POST" action="{% url 'results' %}" class="d-flex flex-column align-items-center">
-                {% csrf_token %}
-                <div class="row">
-                  <div class="col"></div>
-                  <div class="col d-flex justify-content-center align-items-center">
-                    {{ dateform.as_p }}
-                  </div>
-                  <div class="col">
-                    <button class="submit-btn btn mt-2" type="submit" name="date">Search</button>
-
-                  </div>
-                </div>
-                <input type="hidden" name="borough" value="richmond">
-
-            </form>
-        <!-- </div> -->
-        <!-- <div class="col d-flex justify-content-center align-items-center">
-        </div> -->
     </div>
-      
+    <div class="row mt-5">
+      <form
+        method="POST"
+        action="{% url 'results' %}"
+        class="d-flex flex-column align-items-center"
+      >
+        {% csrf_token %}
+        <div class="row">
+          <div class="col"></div>
+          <div class="col d-flex justify-content-center align-items-center">
+            {{ dateform.as_p }}
+          </div>
+          <div class="col">
+            <button class="submit-btn btn mt-2" type="submit" name="date">
+              Search
+            </button>
+          </div>
+        </div>
+        <input type="hidden" name="borough" value="richmond" />
+      </form>
     </div>
-   
-  </div> 
+  </div>
+</div>
 
-  <script
-    src="https://kit.fontawesome.com/b2fe83387a.js"
-    crossorigin="anonymous">
+<script>
+  function loading() {
+    document.body.classList.add("test");
+  }
+</script>
 
-
-    
-
-  </script>
-  <script>
-    function loading() {
-      document.body.classList.add('test');
-    }
-  </script>
-  </body>
-</html>
-
-
-
+{% endblock %}
