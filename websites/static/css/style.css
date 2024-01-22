@@ -415,6 +415,7 @@ table tbody tr {
 
 .p-margin {
     margin-left: 30px;
+    color: black;
 }
 
 .point {
@@ -445,12 +446,71 @@ table tbody tr {
     padding: 10px 40px;
     transition: transform 750ms;
     font-weight: 500;
+    color: #5e5c5c;
 }
 
 .card-title {
     font-weight: 600;
+    color: black;
 }
 
 .card:hover {
     transform: translateY(-10px);
+}
+
+p {
+    color: white;
+}
+
+.border-line {
+    border-bottom: 1px solid gray;
+    margin-bottom: 20px;
+}
+
+
+/* pricing page */
+.pricing-card {
+    width: 90%;
+    height: 700px;
+    border-radius: 10px;
+    background-color: #E9E8E8;
+    padding: 10px 40px;
+    transition: transform 750ms;
+    font-weight: 500;
+    color: black;
+}
+
+.popular-tag {
+    height: 20px;
+    width: 100%;
+    background-color: red;
+}
+
+.card-p {
+    color: black;
+    font-size: 10px;
+    margin: 10px 0px
+}
+
+.pound-symbol {
+    display: inline-block;
+    vertical-align: top;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.month-text {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 500;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.purple-shadow {
+    box-shadow: rgb(138, 84, 255) 0px 8px 24px;
+}
+
+.pricing-card:hover {
+    box-shadow: rgb(50, 223, 246) 0px 8px 24px;
 }

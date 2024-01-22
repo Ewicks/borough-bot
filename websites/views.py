@@ -26,6 +26,9 @@ def get_word_objects():
 def test(request):
     return render(request, 'test.html', {})
 
+def pricing(request):
+    return render(request, 'pricing.html', {})
+
 
 def deleteword(request, pk, redirect_to):
     word = Word.objects.get(id=pk)
