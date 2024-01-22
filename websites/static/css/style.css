@@ -468,6 +468,10 @@ p {
 }
 
 
+.header-num {
+    color: rgb(138, 84, 255) !important;
+}
+
 /* pricing page */
 .pricing-card {
     width: 90%;
@@ -522,7 +526,11 @@ p {
     width: 100%;
 }
 
-.contact-border {
+.border-right {
     border-right: 1px solid white;
 
+}
+
+.xp {
+    padding: 0px 30px;
 }
