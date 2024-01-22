@@ -172,9 +172,9 @@ a:hover {
     border-right: 1px gray solid;
 }
 
-label {
+/* label {
     display: none !important;
-}
+} */
 
 
 /* pages */
@@ -513,4 +513,16 @@ p {
 
 .pricing-card:hover {
     box-shadow: rgb(50, 223, 246) 0px 8px 24px;
+}
+
+/* Contact Us */
+
+.contact-page {
+    height: 600px;
+    width: 100%;
+}
+
+.contact-border {
+    border-right: 1px solid white;
+
 }
