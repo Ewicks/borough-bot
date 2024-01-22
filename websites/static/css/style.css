@@ -15,7 +15,7 @@ body {
     position: relative;
     padding-bottom: 5em; /* Height of footer */
     min-height: 100vh;
-    padding: 0px 40px;
+    /* padding: 0px 40px; */
 }
 
 footer {
@@ -29,7 +29,7 @@ footer {
 
 header {
     background-color: #090B10;
-    height: 50px;
+    height: 70px;
 }
 
 
@@ -544,4 +544,52 @@ p {
 
 .xp {
     padding: 0px 30px;
+}
+
+
+/* About Page */
+
+.statistics {
+    margin: 0px 30px;
+    margin-top: 100px;
+    font-size: 20px;
+}
+
+.about-title {
+    font-size: 60px;
+    letter-spacing: 3px;
+}
+
+.statistics p {
+    font-size: 20px;
+}
+
+.border-seperate {
+    border-bottom: 3px rgb(138, 84, 255) solid;
+    margin-top: 40px;
+}
+
+.about-img {
+    -webkit-animation: mover 2s infinite  alternate;
+    animation: mover 2s infinite  alternate;
+}
+@-webkit-keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+
+.about-section-two {
+    background-color: #E9E8E8;
+}
+
+.about-section-two h1 {
+    color: black;
+}
+
+.about-section-two p{
+    color: black;
 }

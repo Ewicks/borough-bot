@@ -15,5 +15,6 @@ urlpatterns = [
     path('test', views.test, name='test'),
     path('pricing', views.pricing, name='pricing'),
     path('contact', views.contact, name='contact'),
+    path('about', views.about, name='about'),
     path('deleteword/<int:pk>/<str:redirect_to>/', views.deleteword, name='deleteword'),
 ]

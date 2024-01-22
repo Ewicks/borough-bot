@@ -32,6 +32,9 @@ def pricing(request):
 def contact(request):
     return render(request, 'contact.html', {})
 
+def about(request):
+    return render(request, 'about.html', {})
+
 
 def deleteword(request, pk, redirect_to):
     word = Word.objects.get(id=pk)
