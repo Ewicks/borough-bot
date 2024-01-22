@@ -436,3 +436,21 @@ table tbody tr {
     padding: 2px 5px;
     margin: 0;
 }
+
+.card {
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #E9E8E8;
+    padding: 10px 40px;
+    transition: transform 750ms;
+    font-weight: 500;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
