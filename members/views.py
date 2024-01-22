@@ -10,9 +10,7 @@ def login_user(request):
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            print('1')
             login(request, user)
-            print('2')
             return redirect('test')
         else:
             messages.success(request, ('There was an error logging in '))
@@ -20,6 +18,12 @@ def login_user(request):
             
     else:
         return render(request, 'authenticate/login.html', {})
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, ('You have successfully logged out'))
+    return redirect('test')
+
 
 
 def register_user(request):

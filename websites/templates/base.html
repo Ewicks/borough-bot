@@ -45,7 +45,7 @@
                             <span aria-hidden="true"><span class="header-num">04</span></span>Reviews
                         </a>
                     </li>
-                    {% if user.authenticated %}
+                    {% if user.is_authenticated %}
                         <li class="active">
                             <a href="{% url 'logout' %}" class="btn login-btn">
                                 Log Out
