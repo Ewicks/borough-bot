@@ -11,3 +11,4 @@ class Word(models.Model):
 class Date(models.Model):
     startdate = models.DateField()
     enddate = models.DateField()
+
