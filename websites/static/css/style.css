@@ -13,7 +13,7 @@ body {
 .wrapper {
     box-sizing: border-box;
     position: relative;
-    padding-bottom: 5em; /* Height of footer */
+    padding-bottom: 20em; /* Height of footer */
     min-height: 100vh;
     /* padding: 0px 40px; */
 }
@@ -262,8 +262,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     justify-content: center;
     position: relative;
     background-color: #272b2b;
-    padding: 0px 20px;
-    gap: 10px;
+    height: 50px;
     margin: 5px;
     border-radius: 30px;
     color: #fff;
@@ -275,15 +274,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .item-row a {
-    position: absolute;
-    top: 25px;
-    right: 19px;
-    margin: 0px 20px;
+   margin: 0px !important;
 }
 
 i {
     color: #fff !important;
     position: absolute;
+    top: 15px;
+    right: 0;
+
 
 }
 
@@ -696,4 +695,12 @@ table tbody tr {
 .contact-point {
     position: relative;
     margin: 10px 0px;
+}
+
+/* footer */
+
+.footer-line {
+    border-bottom: 1px solid white;
+    width: 100%;
+    margin-top: 30px;
 }
