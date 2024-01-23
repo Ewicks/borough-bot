@@ -2,12 +2,15 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
 import re
 import pandas as pd
+import time
 
 
 def convert(s):
@@ -40,11 +43,32 @@ def kingston_bot(startdate, enddate, wordlist):
     print(reversed_startdate)
     print(reversed_enddate)
 
+    user_agents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59",
+
+    # Add more user agents as needed
+]
+
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
-    chrome_options = webdriver.ChromeOptions()
+
+    # options = webdriver.ChromeOptions()
+    # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
+
+    # driver = webdriver.Chrome(options=options)
+
+    # Create Chrome WebDriver with headless mode
+    chrome_options = Options()
     chrome_options.add_argument('headless')
+
+    # Initialize the driver with the first user agent
+    chrome_options.add_argument(f"user-agent={user_agents[0]}")
     driver = webdriver.Chrome(options=chrome_options)
+
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.add_argument('headless')
+    # driver = webdriver.Chrome(options=chrome_options)
 
     url = 'https://publicaccess.kingston.gov.uk/online-applications/search.do?action=advanced'
     driver.get(url)
@@ -98,11 +122,12 @@ def kingston_bot(startdate, enddate, wordlist):
             address_div = row.find('p', class_='address')
             address = address_div.text.strip()
             address_list.append(address)
-
+            print(address)
+            time.sleep(3)
             a_tag = row.find('a')
             href_value = a_tag.get('href')
             element = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, f"//a[@href='{href_value}']"))
+                EC.element_to_be_clickable((By.XPATH, f"//a[@href='{href_value}']"))
             )
 
             # Now, you can perform actions on the found element
@@ -116,18 +141,21 @@ def kingston_bot(startdate, enddate, wordlist):
             subtab.click()
             driver.execute_script("window.scrollTo(0, window.scrollY + 320);")
 
-            wait = WebDriverWait(driver, 10)
-            wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'row0')))
-            name_page_source = driver.page_source
-            info_soup = BeautifulSoup(name_page_source, 'html.parser')
-
-            applicant_row = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//th[text()="Applicant Name"]/following-sibling::td'))
-            )
+            try:
+                applicant_row = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.XPATH, '//th[text()="Applicant Name"]/following-sibling::td'))
+                )
+            except TimeoutException:
+                print("Timeout occurred! Your code took too long to execute.")
+                applicant_name_value = 'n/a'
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+            else:
+                print("No timeout occurred. Your code executed successfully.")
 
             # Extract the "Applicant Name" text content
-            applicant_name_value = applicant_row.text if applicant_row else None
-
+            if applicant_row:
+                applicant_name_value = applicant_row.text
             name_list.append(applicant_name_value)
             driver.back()
             driver.back()
