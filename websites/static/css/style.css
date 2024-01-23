@@ -122,6 +122,11 @@ a {
 
 /* Home page*/
 
+.fa-arrow-right {
+    top: 19px;
+    right: 20px;
+}
+
 .h1 {
     font-size: 50px;
     color: black;
@@ -191,6 +196,9 @@ a:hover {
     margin-right: 50px;
 }
 
+.home-section-two {
+    background-color: #E9E8E8;
+}
 
 /* pages */
 
@@ -464,7 +472,7 @@ table tbody tr {
     width: 400px;
     height: 300px;
     border-radius: 10px;
-    background-color: #E9E8E8;
+    background-color: #fff;
     padding: 10px 40px;
     transition: transform 750ms;
     font-weight: 500;
