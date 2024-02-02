@@ -141,14 +141,12 @@ def lewisham_bot(startdate, enddate, wordlist):
                 a_tag = row.find('a')
                 href_value = a_tag.get('href')
                 test_url = f'{base_url}{href_value}'
-                # summary_page = requests.get(test_url, verify=False)
                 summary_page = requests.get(
                     url='https://app.scrapingbee.com/api/v1/',
                     params={
                         'api_key': 'LCX9HG6HVFNSR6YAACVCVSKJS1S7HHRD1Y99HC8YEJJA0JJSBJGBC8NA2UEZHH1S7PFN0CFNY0T2LCDO',
                         'url': test_url,  
                     },
-                    
                 )
                 summary_soup = BeautifulSoup(summary_page.content, "html.parser")
                 info_tab = summary_soup.find(id='subtab_details')
