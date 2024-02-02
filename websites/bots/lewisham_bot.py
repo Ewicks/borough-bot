@@ -15,8 +15,15 @@ import time
 import pprint
 import requests
 import urllib3
+import os
+if os.path.isfile('env.py'):
+    import env
 
 def lewisham_bot(startdate, enddate, wordlist):
+
+    API_KEY = os.getenv('API-KEY', '')
+    print(API_KEY)
+
     # Function to split dates
     def split_dates(start_date_str, end_date_str):
         date_format = "%d/%m/%Y"
@@ -144,7 +151,7 @@ def lewisham_bot(startdate, enddate, wordlist):
                 summary_page = requests.get(
                     url='https://app.scrapingbee.com/api/v1/',
                     params={
-                        'api_key': 'LCX9HG6HVFNSR6YAACVCVSKJS1S7HHRD1Y99HC8YEJJA0JJSBJGBC8NA2UEZHH1S7PFN0CFNY0T2LCDO',
+                        'api_key': API_KEY,
                         'url': test_url,  
                     },
                 )
@@ -156,10 +163,9 @@ def lewisham_bot(startdate, enddate, wordlist):
                 further_info = requests.get(
                     url='https://app.scrapingbee.com/api/v1/',
                     params={
-                        'api_key': 'LCX9HG6HVFNSR6YAACVCVSKJS1S7HHRD1Y99HC8YEJJA0JJSBJGBC8NA2UEZHH1S7PFN0CFNY0T2LCDO',
+                        'api_key': API_KEY,
                         'url': info_atag,  
                     },
-                    
                 )
                 further_info_soup = BeautifulSoup(further_info.content, "html.parser")
                 applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')

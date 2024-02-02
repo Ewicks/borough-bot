@@ -16,6 +16,8 @@ import requests
 import urllib3
 from dotenv import load_dotenv
 import os
+if os.path.isfile('env.py'):
+    import env
 
 
 # bug: instead of searching for a tag name be more specific so if two rows have the same name it won duplicate.
@@ -26,9 +28,7 @@ def guildford_bot(startdate, enddate, wordlist):
     load_dotenv()
 
     # Access the API key
-    api_key = os.getenv("API_KEY")
-    print(api_key)
-
+    API_KEY = os.getenv('API-KEY', '')
     
 
     def split_dates(start_date_str, end_date_str):
@@ -162,7 +162,7 @@ def guildford_bot(startdate, enddate, wordlist):
             summary_page = requests.get(
                 url='https://app.scrapingbee.com/api/v1/',
                 params={
-                    'api_key': api_key,
+                    'api_key': API_KEY,
                     'url': test_url,  
                 },
             )
@@ -174,7 +174,7 @@ def guildford_bot(startdate, enddate, wordlist):
             further_info = requests.get(
                     url='https://app.scrapingbee.com/api/v1/',
                     params={
-                        'api_key': api_key,
+                        'api_key': API_KEY,
                         'url': info_atag,  
                     },
                 )
