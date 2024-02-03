@@ -11,6 +11,7 @@ urlpatterns = [
     path('epsom/', views.epsom, name='epsom'),
     path('woking/', views.woking, name='woking'),
     path('lewisham/', views.lewisham, name='lewisham'),
+    path('hammersmith_fulham/', views.hammersmith_fulham, name='hammersmith_fulham'),
     path('results', views.results, name='results'),
     path('test', views.test, name='test'),
     path('pricing', views.pricing, name='pricing'),

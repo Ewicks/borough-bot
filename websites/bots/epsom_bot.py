@@ -1,33 +1,70 @@
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
-import re
+from selenium.webdriver.common.action_chains import ActionChains
 import pandas as pd
+from datetime import datetime, timedelta
+import re
+import time
+import pprint
+import requests
+import urllib3
 
-
-def convert(s):
- 
-    # initialization of string to ""
-    new = ""
- 
-    # traverse in the string
-    for x in s:
-        new = new + x + '|'
- 
-    # return string
-    return new
-
-
+# bug: instead of searching for a tag name be more specific so if two rows have the same name it won duplicate.
 def epsom_bot(startdate, enddate, wordlist):
+
+    
+
+    def split_dates(start_date_str, end_date_str):
+        date_format = "%d/%m/%Y"
+        start_date = datetime.strptime(start_date_str, date_format)
+        end_date = datetime.strptime(end_date_str, date_format)
+
+        date_ranges = []
+        current_date = start_date
+
+        while current_date <= end_date:
+            next_date = current_date + timedelta(days=1)  # Add 9 days to current date
+            if next_date > end_date:
+                next_date = end_date
+            date_ranges.append((current_date.strftime(date_format), next_date.strftime(date_format)))
+            current_date = next_date + timedelta(days=1)  # Move to the next day
+
+        return date_ranges
+    
+
+
+
+
+    # wordlist = ['rear']
+    # wordlist = ['loft','ground','rear', 'erection']
+
+    def convert(s):
+    
+        # initialization of string to ""
+        new = ""
+    
+        # traverse in the string
+        for x in s:
+            new = new + x + '|'
+    
+        # return string
+        return new
+
+    # Suppress only the InsecureRequestWarning from urllib3 needed for your request
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
     words = convert(wordlist)
     words_search_for = words.rstrip(words[-1])
+   
 
+    # lists
     row_list = []
     address_list = []
     name_list = []
@@ -39,12 +76,15 @@ def epsom_bot(startdate, enddate, wordlist):
     reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
     print(reversed_startdate)
     print(reversed_enddate)
+    # list_of_dates = split_dates(reversed_startdate, reversed_enddate)
 
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('headless')
     driver = webdriver.Chrome(options=chrome_options)
+
+    base_url = 'https://eplanning.epsom-ewell.gov.uk/'
 
     url = 'https://eplanning.epsom-ewell.gov.uk/online-applications/search.do?action=advanced'
     driver.get(url)
@@ -71,7 +111,10 @@ def epsom_bot(startdate, enddate, wordlist):
     next_a_tag = None
     multiple_pages = True
 
+
+
     while (multiple_pages):
+
         wait = WebDriverWait(driver, 10)
         wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
         # Get the page source after the search
@@ -89,60 +132,48 @@ def epsom_bot(startdate, enddate, wordlist):
             address_div = row.find('a')
             address_desc = address_div.text
 
+
             if (re.search(words_search_for, address_desc, flags=re.I)):
                 row_list.append(row)
 
-
+        print(len(row_list))
         for row in row_list:
             # Find the address and add to address_list
             address_div = row.find('p', class_='address')
             address = address_div.text.strip()
             address_list.append(address)
+            print(address)
 
             a_tag = row.find('a')
             href_value = a_tag.get('href')
-            element = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, f"//a[@href='{href_value}']"))
-            )
+            test_url = (f'{base_url}{href_value}')
+            summary_page = requests.get(test_url, verify=False)
+            summary_soup = BeautifulSoup(summary_page.content, "html.parser")
+            info_tab = summary_soup.find(id='subtab_details')
+            info_href = info_tab.get('href')
+            info_atag = (f'{base_url}{info_href}')
+            further_info = requests.get(info_atag, verify=False)
+            further_info_soup = BeautifulSoup(further_info.content, "html.parser")
+            applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
+            applicant_name = applicant_row.get_text(strip=True)
 
-            # Now, you can perform actions on the found element
-            # For example, click the link
-            element.click()
-            driver.execute_script("window.scrollTo(0, window.scrollY + 300);")
-            wait = WebDriverWait(driver, 10)
-            wait.until(EC.presence_of_element_located((By.ID, 'subtab_details')))
-
-            subtab = driver.find_element(By.ID, 'subtab_details')
-            subtab.click()
-            driver.execute_script("window.scrollTo(0, window.scrollY + 320);")
-
-            wait = WebDriverWait(driver, 10)
-            wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'row0')))
-            name_page_source = driver.page_source
-            info_soup = BeautifulSoup(name_page_source, 'html.parser')
-
-            applicant_row = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//th[text()="Applicant Name"]/following-sibling::td'))
-            )
-
-            # Extract the "Applicant Name" text content
-            applicant_name_value = applicant_row.text if applicant_row else None
-
-            name_list.append(applicant_name_value)
-            driver.back()
-            driver.back()
-            driver.execute_script("location.reload(true);")
+            print(applicant_name)
+            name_list.append(applicant_name)
 
         try:
             next_a_tag = driver.find_element(By.CLASS_NAME, 'next')
             # If the element is found, you can interact with it here
             multiple_pages = True
-            next_a_tag.click()
+            action = ActionChains(driver)
+            action.move_to_element(next_a_tag).click().perform()
+            # time.sleep(2)
+            # next_a_tag.click()
             
         except NoSuchElementException:
             # If the element is not found, handle the exception here
             multiple_pages = False
             print("Element not found. Continuing without clicking.")
+
 
 
 
@@ -152,7 +183,7 @@ def epsom_bot(startdate, enddate, wordlist):
         data.append(item)
 
     print(data)
+    return data
 
     # Close the browser window
     driver.quit()
-    return data

@@ -16,26 +16,26 @@ import requests
 import urllib3
 
 # bug: instead of searching for a tag name be more specific so if two rows have the same name it won duplicate.
-def southwark_bot(startdate, enddate, wordlist):
+def hammersmith_fulham_bot(startdate, enddate, wordlist):
 
     
 
-    # def split_dates(start_date_str, end_date_str):
-    #     date_format = "%d/%m/%Y"
-    #     start_date = datetime.strptime(start_date_str, date_format)
-    #     end_date = datetime.strptime(end_date_str, date_format)
+    def split_dates(start_date_str, end_date_str):
+        date_format = "%d/%m/%Y"
+        start_date = datetime.strptime(start_date_str, date_format)
+        end_date = datetime.strptime(end_date_str, date_format)
 
-    #     date_ranges = []
-    #     current_date = start_date
+        date_ranges = []
+        current_date = start_date
 
-    #     while current_date <= end_date:
-    #         next_date = current_date + timedelta(days=1)  # Add 9 days to current date
-    #         if next_date > end_date:
-    #             next_date = end_date
-    #         date_ranges.append((current_date.strftime(date_format), next_date.strftime(date_format)))
-    #         current_date = next_date + timedelta(days=1)  # Move to the next day
+        while current_date <= end_date:
+            next_date = current_date + timedelta(days=1)  # Add 9 days to current date
+            if next_date > end_date:
+                next_date = end_date
+            date_ranges.append((current_date.strftime(date_format), next_date.strftime(date_format)))
+            current_date = next_date + timedelta(days=1)  # Move to the next day
 
-    #     return date_ranges
+        return date_ranges
     
 
 
@@ -78,27 +78,26 @@ def southwark_bot(startdate, enddate, wordlist):
     print(reversed_enddate)
     # list_of_dates = split_dates(reversed_startdate, reversed_enddate)
 
-    # for x in list_of_dates:
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('headless')
-    driver = webdriver.Chrome(options=chrome_options)
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.add_argument('headless')
+    # driver = webdriver.Chrome(options=chrome_options)
 
-    # driver = webdriver.Chrome()
+    driver = webdriver.Chrome()
 
-    base_url = 'https://planning.southwark.gov.uk/'
+    base_url = 'https://public-access.lbhf.gov.uk/'
 
-    url = 'https://planning.southwark.gov.uk/online-applications/search.do?action=advanced'
+    url = 'https://public-access.lbhf.gov.uk/online-applications/search.do?action=advanced'
     driver.get(url)
 
     # Input start and end dates
-    input_element1 = driver.find_element(By.ID, 'applicationReceivedStart')
-    input_element2 = driver.find_element(By.ID, 'applicationReceivedEnd')
+    input_element1 = driver.find_element(By.ID, 'applicationValidatedStart')
+    input_element2 = driver.find_element(By.ID, 'applicationValidatedEnd')
     input_element1.send_keys(reversed_startdate)
     input_element2.send_keys(reversed_enddate)
     # Click the search button
-    search_element = driver.find_element(By.CLASS_NAME, 'recaptcha-submit')
+    search_element = driver.find_element(By.CLASS_NAME, 'primary')
     search_element.click()
 
     # Wait for the page to load (you may need to adjust the waiting time)
@@ -141,7 +140,6 @@ def southwark_bot(startdate, enddate, wordlist):
 
         print(len(row_list))
         for row in row_list:
-            time.sleep(2)
             # Find the address and add to address_list
             address_div = row.find('p', class_='address')
             address = address_div.text.strip()
@@ -160,8 +158,6 @@ def southwark_bot(startdate, enddate, wordlist):
             further_info_soup = BeautifulSoup(further_info.content, "html.parser")
             applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
             applicant_name = applicant_row.get_text(strip=True)
-
-
 
             print(applicant_name)
             name_list.append(applicant_name)
@@ -189,9 +185,7 @@ def southwark_bot(startdate, enddate, wordlist):
         data.append(item)
 
     print(data)
-    driver.quit()
-    
     return data
 
-
-   
+    # Close the browser window
+    driver.quit()
