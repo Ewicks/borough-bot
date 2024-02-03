@@ -36,6 +36,7 @@ def merton_bot(startdate, enddate, wordlist):
 
     words = convert(wordlist)
     words_search_for = words.rstrip(words[-1])
+    print(words_search_for)
    
 
     # lists
@@ -53,11 +54,9 @@ def merton_bot(startdate, enddate, wordlist):
 
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument('headless')
-    # driver = webdriver.Chrome(options=chrome_options)
-
-    driver = webdriver.Chrome()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    driver = webdriver.Chrome(options=chrome_options)
 
     base_url = 'https://planning.merton.gov.uk/'
 
@@ -88,31 +87,38 @@ def merton_bot(startdate, enddate, wordlist):
         # Parse HTML with BeautifulSoup
         soup = BeautifulSoup(page_source, 'html.parser')
 
-        searchResultsPage = soup.find('div', class_='col-a')
-        searchResults = searchResultsPage.find_all('li', class_='searchresult')
+        searchResultsPage = soup.find('table', class_='display_table')
+        searchResults = searchResultsPage.find_all('tr', class_=['Row0', 'Row1'])
+        searchResults = searchResults[1:]
 
         row_list = []
 
         for row in searchResults:
-            address_div = row.find('a')
-            address_desc = address_div.text
+          
+            # print(address_desc)
+            description_div = row.find('td', {'title': 'Development Description'})
+            description_text = description_div.text
 
 
-            if (re.search(words_search_for, address_desc, flags=re.I)):
+            if (re.search(words_search_for, description_text, flags=re.I)):
                 row_list.append(row)
 
         print(len(row_list))
         for row in row_list:
-            # Find the address and add to address_list
-            address_div = row.find('p', class_='address')
+            address_div = row.find('td', {'title': 'Site Address'})
             address = address_div.text.strip()
             address_list.append(address)
-            print(address)
+
+            # a_tag = row.find('td', {'title': 'View Application Details'})
+            # print(a_tag)
+
 
             a_tag = row.find('a')
             href_value = a_tag.get('href')
             test_url = (f'{base_url}{href_value}')
+            # print(test_url)
             summary_page = requests.get(test_url, verify=False)
+            print(summary_page)
             summary_soup = BeautifulSoup(summary_page.content, "html.parser")
             info_tab = summary_soup.find(id='subtab_details')
             info_href = info_tab.get('href')
