@@ -14,9 +14,14 @@ import time
 import pprint
 import requests
 import urllib3
+import os
+if os.path.isfile('env.py'):
+    import env
 
 # bug: instead of searching for a tag name be more specific so if two rows have the same name it won duplicate.
 def merton_bot(startdate, enddate, wordlist):
+
+    API_KEY = os.getenv('API-KEY', '')
 
     def convert(s):
     
@@ -58,7 +63,7 @@ def merton_bot(startdate, enddate, wordlist):
     chrome_options.add_argument('headless')
     driver = webdriver.Chrome(options=chrome_options)
 
-    base_url = 'https://planning.merton.gov.uk/'
+    base_url = 'https://planning.merton.gov.uk/Northgate/PlanningExplorerAA/Generic/'
 
     url = 'https://planning.merton.gov.uk/Northgate/PlanningExplorerAA/GeneralSearch.aspx'
     driver.get(url)
@@ -109,27 +114,27 @@ def merton_bot(startdate, enddate, wordlist):
             address = address_div.text.strip()
             address_list.append(address)
 
-            # a_tag = row.find('td', {'title': 'View Application Details'})
-            # print(a_tag)
-
-
             a_tag = row.find('a')
             href_value = a_tag.get('href')
-            test_url = (f'{base_url}{href_value}')
-            # print(test_url)
-            summary_page = requests.get(test_url, verify=False)
-            print(summary_page)
-            summary_soup = BeautifulSoup(summary_page.content, "html.parser")
-            info_tab = summary_soup.find(id='subtab_details')
-            info_href = info_tab.get('href')
-            info_atag = (f'{base_url}{info_href}')
-            further_info = requests.get(info_atag, verify=False)
-            further_info_soup = BeautifulSoup(further_info.content, "html.parser")
-            applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
-            applicant_name = applicant_row.get_text(strip=True)
+            next_url = (f'{base_url}{href_value}')
+            print(next_url)
+            summary_page = requests.get(next_url, verify=False)
+            # summary_page = requests.get(
+            #     url='https://app.scrapingbee.com/api/v1/',
+            #     params={
+            #         'api_key': API_KEY,
+            #         'url': next_url,  
+            #     },
+            # )
+            next_page_soup = BeautifulSoup(summary_page.content, "html.parser")
+            print(next_page_soup)
+            applicant_section = next_page_soup.find('div', id='breadcrumbs')
+            # print(applicant_section)
+            # applicant_row = applicant_section.find('th', string='Applicant Name').find_next('td')
+            # applicant_name = applicant_row.get_text(strip=True)
 
-            print(applicant_name)
-            name_list.append(applicant_name)
+            # print(applicant_name)
+            # name_list.append(applicant_name)
 
         try:
             next_a_tag = driver.find_element(By.CLASS_NAME, 'next')
