@@ -113,31 +113,46 @@ def merton_bot(startdate, enddate, wordlist):
             address_div = row.find('td', {'title': 'Site Address'})
             address = address_div.text.strip()
             address_list.append(address)
+            print(address)
 
             a_tag = row.find('a')
             href_value = a_tag.get('href')
             next_url = (f'{base_url}{href_value}')
-            print(next_url)
-            summary_page = requests.get(next_url, verify=False)
+            cookies = {"MVMSession":"ID=359bcbf2-8628-4c5c-9cd5-b2a854a391e9"}
+            # cookies = {"_ga_ZNLJF35KPL":"GS1.1.1706998240.1.0.1706998240.0.0.0"}
+            summary_page = requests.get(next_url, cookies=cookies, verify=False)
             # summary_page = requests.get(
             #     url='https://app.scrapingbee.com/api/v1/',
+            #     cookies= {"_ga_ZNLJF35KPL":"GS1.1.1706998240.1.0.1706998240.0.0.0"},
+
             #     params={
             #         'api_key': API_KEY,
             #         'url': next_url,  
             #     },
             # )
             next_page_soup = BeautifulSoup(summary_page.content, "html.parser")
-            print(next_page_soup)
-            applicant_section = next_page_soup.find('div', id='breadcrumbs')
-            # print(applicant_section)
-            # applicant_row = applicant_section.find('th', string='Applicant Name').find_next('td')
-            # applicant_name = applicant_row.get_text(strip=True)
-
-            # print(applicant_name)
-            # name_list.append(applicant_name)
+            applicant_sections = next_page_soup.find_all('ul', class_='list')
+            print(applicant_sections)
+            sections = applicant_sections[1]
+            applicant_span = sections.find('span', text='Applicant')
+            parent_div = applicant_span.find_parent('div')
+            applicant_name = ''.join([
+                text
+                for text in parent_div.stripped_strings
+                if text.lower() != 'applicant'
+            ])
+            name_list.append(applicant_name)
+            print(applicant_name)
 
         try:
-            next_a_tag = driver.find_element(By.CLASS_NAME, 'next')
+            # next_a_tag = driver.find_element(By.CLASS_NAME, 'noborder')
+            # print(next_a_tag)
+            # next_a_tag = driver.find_element(By.XPATH, "//a[@title='Go to next page ']")
+            a_tag = driver.find_element(By.CSS_SELECTOR, 'a[title="Go to next page "]')
+            print(a_tag)
+
+
+            time.sleep(5)
             # If the element is found, you can interact with it here
             multiple_pages = True
             action = ActionChains(driver)
@@ -145,7 +160,7 @@ def merton_bot(startdate, enddate, wordlist):
             # time.sleep(2)
             # next_a_tag.click()
             
-        except NoSuchElementException:
+        except:
             # If the element is not found, handle the exception here
             multiple_pages = False
             print("Element not found. Continuing without clicking.")
