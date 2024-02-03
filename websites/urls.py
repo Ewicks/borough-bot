@@ -10,6 +10,7 @@ urlpatterns = [
     path('guildford/', views.guildford, name='guildford'),
     path('epsom/', views.epsom, name='epsom'),
     path('woking/', views.woking, name='woking'),
+    path('bromley/', views.bromley, name='bromley'),
     path('lewisham/', views.lewisham, name='lewisham'),
     path('hammersmith_fulham/', views.hammersmith_fulham, name='hammersmith_fulham'),
     path('results', views.results, name='results'),
