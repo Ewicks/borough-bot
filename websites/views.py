@@ -322,7 +322,8 @@ def results(request):
         if borough == 'kensington_chelsea':
             my_list = kensington_chelsea_bot(startdate, enddate, wordlist)
 
-
+        data_list = my_list[0]
+        num_results = my_list[1]
         # Open the Google Spreadsheet using its title
         # Set up the credentials
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -344,7 +345,7 @@ def results(request):
         data_to_write = [column_titles]
 
         # Loop through your_list with index
-        for index, item in enumerate(my_list):
+        for index, item in enumerate(data_list):
             row_data = [index + 1] + list(item)
             data_to_write.append(row_data)
 
@@ -355,7 +356,8 @@ def results(request):
         creds = None
 
         context = {
-            'my_list': my_list,
+            'my_list': data_list,
+            'num_results': num_results,
         }
 
         return render(request, 'results.html', context)
