@@ -12,6 +12,7 @@ from .bots.lewisham_bot import lewisham_bot
 from .bots.hammersmith_fulham_bot import hammersmith_fulham_bot
 from .bots.bromley_bot import bromley_bot
 from .bots.merton_bot import merton_bot
+from .bots.kensington_chelsea_bot import kensington_chelsea_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -65,6 +66,25 @@ def richmond(request):
         'dateform': dateform,
     }
     return render(request, 'richmond.html', context)
+
+def kensington_chelsea(request):
+    words = Word.objects.all()
+    form = WordForm()
+    dateform = DateForm()
+
+    if request.method == 'POST':
+        form = WordForm(request.POST or None)
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('kensington_chelsea')
+
+    context = {
+        'form': form,
+        'words': words,
+        'dateform': dateform,
+    }
+    return render(request, 'kensington_chelsea.html', context)
 
 def epsom(request):
     words = Word.objects.all()
@@ -296,6 +316,8 @@ def results(request):
             my_list = bromley_bot(startdate, enddate, wordlist)
         if borough == 'merton':
             my_list = merton_bot(startdate, enddate, wordlist)
+        if borough == 'kensington_chelsea':
+            my_list = kensington_chelsea_bot(startdate, enddate, wordlist)
 
 
         # Open the Google Spreadsheet using its title
