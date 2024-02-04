@@ -44,7 +44,12 @@ def about(request):
     return render(request, 'about.html', {})
 
 def reviews(request):
-    return render(request, 'reviews.html', {})
+    scrape_results = Scrape.objects.all()
+
+    context = {
+        'scrape_results': scrape_results,
+    }
+    return render(request, 'reviews.html', context)
 
 
 def deleteword(request, pk, redirect_to):
@@ -367,7 +372,7 @@ def results(request):
             user_instance = request.user
 
             # Create a new Scrape instance associated with the authenticated user
-            new_scrape = Scrape.objects.create(
+            Scrape.objects.create(
                 user=user_instance,
                 borough=borough,
                 startdate=startdate,
@@ -375,15 +380,16 @@ def results(request):
                 results_number=num_results,
                 date_added=timezone.now()  # Add the current date and time
             )
-            print(new_scrape.date_added)
+            scrape_results = Scrape.objects.filter(user=user_instance)
 
 
         context = {
             'my_list': data_list,
             'num_results': num_results,
+            'scrape_results': scrape_results,
 
         }
 
-        return render(request, 'results.html', context)
+        return render(request, 'reviews.html', context)
 
 
