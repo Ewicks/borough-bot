@@ -59,27 +59,39 @@ def kensington_chelsea_bot(startdate, enddate, wordlist):
 
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('headless')
-    driver = webdriver.Chrome(options=chrome_options)
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.add_argument('headless')
+    # driver = webdriver.Chrome(options=chrome_options)
 
-    base_url = 'https://planning.merton.gov.uk/Northgate/PlanningExplorerAA/Generic/'
+    driver = webdriver.Chrome()
 
-    url = 'https://planning.merton.gov.uk/Northgate/PlanningExplorerAA/GeneralSearch.aspx'
+    base_url = 'https://www.rbkc.gov.uk/'
+
+    url = 'https://www.rbkc.gov.uk/planning/searches/default.aspx?adv=1#advancedSearch'
     driver.get(url)
 
     # Input start and end dates
-    input_element1 = driver.find_element(By.ID, 'dateStart')
-    input_element2 = driver.find_element(By.ID, 'dateEnd')
+    input_element1 = driver.find_element(By.ID, 'regDateFrom')
+    input_element2 = driver.find_element(By.ID, 'regDateTo')
     input_element1.send_keys(reversed_startdate)
     input_element2.send_keys(reversed_enddate)
+
+
+
+    # Select 100 and submit to show max results
+    num_results_element = WebDriverWait(driver, 10).until(
+    EC.presence_of_element_located((By.ID, 'batch'))
+    )
+    num_results_element = Select(driver.find_element(By.ID, 'batch'))
+    num_results_element.select_by_visible_text('100 per page')
+
     # Click the search button
-    search_element = driver.find_element(By.ID, 'csbtnSearch')
+    search_element = driver.find_element(By.ID, 'btnSearch')
     search_element.click()
 
     # Wait for the page to load (you may need to adjust the waiting time)
     wait = WebDriverWait(driver, 10)
-    wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'display_table')))
+    wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'scrollBar')))
 
     multiple_pages = True
 
@@ -91,17 +103,19 @@ def kensington_chelsea_bot(startdate, enddate, wordlist):
         # Parse HTML with BeautifulSoup
         soup = BeautifulSoup(page_source, 'html.parser')
 
-        searchResultsPage = soup.find('table', class_='display_table')
-        searchResults = searchResultsPage.find_all('tr', class_=['Row0', 'Row1'])
+        searchResultsPage = soup.find('table')
+        searchResults = searchResultsPage.find_all('tr')
         searchResults = searchResults[1:]
+        # print(searchResults)
 
         row_list = []
 
         for row in searchResults:
           
             # print(address_desc)
-            description_div = row.find('td', {'title': 'Development Description'})
+            description_div = row.find_all('td')[1]
             description_text = description_div.text
+            print(description_text)
 
 
             if (re.search(words_search_for, description_text, flags=re.I)):
