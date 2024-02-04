@@ -16,6 +16,8 @@ from .bots.kensington_chelsea_bot import kensington_chelsea_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+
 
 
 
@@ -361,23 +363,25 @@ def results(request):
         # Close the connection
         creds = None
 
-         # Check if the user is authenticated
-        # if request.user and request.user.is_authenticated:
-        #     user_instance = request.user
+        if request.user and request.user.is_authenticated:
+            user_instance = request.user
 
-        #     # Create a new Scrape instance associated with the authenticated user
-        #     new_scrape = Scrape.objects.create(
-        #         user=user_instance,
-        #         borough=borough,
-        #         startdate=startdate,
-        #         enddate=enddate,
-        #         results_number=num_results
-        #     )
+            # Create a new Scrape instance associated with the authenticated user
+            new_scrape = Scrape.objects.create(
+                user=user_instance,
+                borough=borough,
+                startdate=startdate,
+                enddate=enddate,
+                results_number=num_results,
+                date_added=timezone.now()  # Add the current date and time
+            )
+            print(new_scrape.date_added)
 
 
         context = {
             'my_list': data_list,
             'num_results': num_results,
+
         }
 
         return render(request, 'results.html', context)
