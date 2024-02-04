@@ -5,7 +5,7 @@ from .models import *
 class WordForm(forms.ModelForm):
     class Meta:
         model = Word
-        fields = '__all__'
+        fields = ('word',)
         labels = {
             'word': '',  # Set the label for the 'word' field to an empty string
         }

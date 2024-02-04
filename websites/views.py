@@ -355,6 +355,20 @@ def results(request):
         # Close the connection
         creds = None
 
+         # Check if the user is authenticated
+        # if request.user and request.user.is_authenticated:
+        #     user_instance = request.user
+
+        #     # Create a new Scrape instance associated with the authenticated user
+        #     new_scrape = Scrape.objects.create(
+        #         user=user_instance,
+        #         borough=borough,
+        #         startdate=startdate,
+        #         enddate=enddate,
+        #         results_number=num_results
+        #     )
+
+
         context = {
             'my_list': data_list,
             'num_results': num_results,
