@@ -733,7 +733,7 @@ table tr:nth-child(even) {
 }
 
 .tabs a:hover {
-    border-bottom: 1px solid #E5E8EB;
+    border-bottom: 1px solid black;
     color: blue;
 }
 
@@ -752,3 +752,11 @@ table tr:nth-child(even) {
     font-size: 12px;
 }
 
+tr {
+    padding: 20px 0px !important;
+}
+
+tr:hover {
+    background-color: rgb(236, 234, 234);
+   
+}
