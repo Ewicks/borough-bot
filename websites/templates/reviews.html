@@ -66,14 +66,9 @@
                           <td>{{ item.startdate }}</td>
                           <td>{{ item.enddate }}</td>
                           <td>{{ item.results_number }}</td>
-                          <!-- <td>
-                            <a class="text-dark" href="{ url 'results' pk=item.pk}">
-                              View Results
-                            </a>
-                          </td> -->
+                          <td></td>
                           <td>{{ item.download_results }}</td>
                           <td>{{ item.date_added }}</td>
-                         
                           <td>
                             <a class="text-dark" href="{% url 'delete_scrape' pk=item.pk %}">
                               delete
