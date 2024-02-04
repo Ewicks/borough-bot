@@ -65,7 +65,7 @@ def kensington_chelsea_bot(startdate, enddate, wordlist):
 
     driver = webdriver.Chrome()
 
-    base_url = 'https://www.rbkc.gov.uk/'
+    base_url = 'https://www.rbkc.gov.uk/planning/searches/'
 
     url = 'https://www.rbkc.gov.uk/planning/searches/default.aspx?adv=1#advancedSearch'
     driver.get(url)
@@ -106,34 +106,32 @@ def kensington_chelsea_bot(startdate, enddate, wordlist):
         searchResultsPage = soup.find('table')
         searchResults = searchResultsPage.find_all('tr')
         searchResults = searchResults[1:]
-        # print(searchResults)
-
         row_list = []
 
         for row in searchResults:
           
-            # print(address_desc)
             description_div = row.find_all('td')[1]
-            description_text = description_div.text
-            print(description_text)
+            description_text = description_div.text.strip().replace('\n', '')
+            parts = description_text.split("...")
+            address = parts[0].strip()
+            description = parts[1].strip()
 
-
-            if (re.search(words_search_for, description_text, flags=re.I)):
+            if (re.search(words_search_for, description, flags=re.I)):
                 row_list.append(row)
 
         print(len(row_list))
         for row in row_list:
-            address_div = row.find('td', {'title': 'Site Address'})
-            address = address_div.text.strip()
-            address_list.append(address)
+            description_div = row.find_all('td')[1]
+            description_text = description_div.text.strip().replace('\n', '')
+            parts = description_text.split("...")
+            address = parts[0].strip()
             print(address)
+            address_list.append(address)
 
             a_tag = row.find('a')
             href_value = a_tag.get('href')
             next_url = (f'{base_url}{href_value}')
-            cookies = {"MVMSession":"ID=c721a245-35e4-4b40-ba1d-b947403f27da"}
-            # cookies = {"_ga_ZNLJF35KPL":"GS1.1.1706998240.1.0.1706998240.0.0.0"}
-            summary_page = requests.get(next_url, cookies=cookies, verify=False)
+            summary_page = requests.get(next_url, verify=False)
             # summary_page = requests.get(
             #     url='https://app.scrapingbee.com/api/v1/',
             #     cookies= {"_ga_ZNLJF35KPL":"GS1.1.1706998240.1.0.1706998240.0.0.0"},
@@ -144,36 +142,24 @@ def kensington_chelsea_bot(startdate, enddate, wordlist):
             #     },
             # )
             next_page_soup = BeautifulSoup(summary_page.content, "html.parser")
-            applicant_sections = next_page_soup.find_all('ul', class_='list')
-            sections = applicant_sections[1]
-            applicant_span = sections.find('span', text='Applicant')
-            parent_div = applicant_span.find_parent('div')
-            applicant_name = ''.join([
-                text
-                for text in parent_div.stripped_strings
-                if text.lower() != 'applicant'
-            ])
-            name_list.append(applicant_name)
+            applicant_section = next_page_soup.find('table', id='applicant-details')
+            applicant_tr = applicant_section.find_all('tr')[0]
+            applicant_name = applicant_tr.find('td').text.strip()
             print(applicant_name)
-
+            name_list.append(applicant_name)
         
         
-        
-        try: 
-            next_a_tag = soup.find('img', {'title': 'Go to next page '})
-        except:
-            next_a_tag = False
-    
-        if (next_a_tag):
+        try:
+            next_a_tag = driver.find_element(By.CLASS_NAME, 'pagNumber-nextPage')
             multiple_pages = True
-            next_a_tag = driver.find_element(By.CLASS_NAME, 'noborder')
             action = ActionChains(driver)
             action.move_to_element(next_a_tag).click().perform()
-   
-        else:
+                
+        except NoSuchElementException:
             # If the element is not found, handle the exception here
             multiple_pages = False
             print("Element not found. Continuing without clicking.")
+
 
 
     merge_data = zip(name_list, address_list)
