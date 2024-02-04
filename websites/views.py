@@ -15,6 +15,8 @@ from .bots.merton_bot import merton_bot
 from .bots.kensington_chelsea_bot import kensington_chelsea_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
@@ -51,17 +53,20 @@ def deleteword(request, pk, redirect_to):
 
 
 
+
+@login_required
 def richmond(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
-        form = WordForm(request.POST or None)
+        form = WordForm(request.POST)
         if form.is_valid():
-            print(form)
-            form.save()
-        return redirect('richmond')
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user  # Associate the word with the current user
+            word_instance.save()
+            return redirect('richmond')
 
     context = {
         'form': form,
@@ -69,6 +74,7 @@ def richmond(request):
         'dateform': dateform,
     }
     return render(request, 'richmond.html', context)
+
 
 def kensington_chelsea(request):
     words = Word.objects.all()
