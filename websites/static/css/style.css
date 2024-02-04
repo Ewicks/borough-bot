@@ -760,3 +760,8 @@ tr:hover {
     background-color: rgb(236, 234, 234);
    
 }
+
+.fa-trash {
+    color: black !important;
+    font-size: 20px;
+}

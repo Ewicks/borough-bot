@@ -17,6 +17,9 @@ urlpatterns = [
     path('hammersmith_fulham/', views.hammersmith_fulham, name='hammersmith_fulham'),
     path('results', views.results, name='results'),
     path('reviews', views.reviews, name='reviews'),
+    path('delete_scrape/<int:pk>/', views.delete_scrape, name='delete_scrape'),
+
+
     path('test', views.test, name='test'),
     path('pricing', views.pricing, name='pricing'),
     path('contact', views.contact, name='contact'),

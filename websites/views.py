@@ -17,7 +17,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 
 
 
@@ -51,6 +52,12 @@ def reviews(request):
     }
     return render(request, 'reviews.html', context)
 
+def delete_scrape(request, pk):
+    scrape = get_object_or_404(Scrape, pk=pk)
+    redirect_to = 'reviews'  # Replace with your actual redirect view name
+    scrape.delete()
+  
+    return redirect(reverse(redirect_to))
 
 def deleteword(request, pk, redirect_to):
     word = Word.objects.get(id=pk)

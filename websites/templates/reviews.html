@@ -11,13 +11,15 @@
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 <body>
     <div class="sidebar">
         <h1>test</h1>
-        <!-- <a href="">
+        <a href="">
           <i class="fa-solid fa-trash"></i>
-        </a> -->
+        </a>
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -59,19 +61,26 @@
                       </thead>
                       <tbody class="tbody-border fw-normal">
                         {% for item in scrape_results %}
-                          <tr>
-                            <td>{{ item.borough }}</td>
-                            <td>{{ item.startdate }}</td>
-                            <td>{{ item.enddate }}</td>
-                            <td>{{ item.results_number }}</td>
-                            <td>{{ item.view_results }}</td>
-                            <td>{{ item.download_results }}</td>
-                            <td>{{ item.date_added }}</td>
-                            <td>
-                              <i class="fa-solid fa-trash"></i>
-                            </td>
-                          </tr>
-                        {% endfor %}
+                        <tr>
+                          <td>{{ item.borough }}</td>
+                          <td>{{ item.startdate }}</td>
+                          <td>{{ item.enddate }}</td>
+                          <td>{{ item.results_number }}</td>
+                          <td>{{ item.view_results }}</td>
+                          <td>{{ item.download_results }}</td>
+                          <td>{{ item.date_added }}</td>
+                          <td>
+                            <a href="">
+                              View Results
+                            </a>
+                          </td>
+                          <td>
+                            <a class="text-dark" href="{% url 'delete_scrape' pk=item.pk %}">
+                              delete
+                            </a>
+                          </td>
+                        </tr>
+                      {% endfor %}
                       </tbody>
                     
                 </table>
