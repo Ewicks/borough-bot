@@ -81,7 +81,6 @@ def merton_bot(startdate, enddate, wordlist):
     wait = WebDriverWait(driver, 10)
     wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'display_table')))
 
-    next_a_tag = None
     multiple_pages = True
 
     while (multiple_pages):
@@ -118,7 +117,7 @@ def merton_bot(startdate, enddate, wordlist):
             a_tag = row.find('a')
             href_value = a_tag.get('href')
             next_url = (f'{base_url}{href_value}')
-            cookies = {"MVMSession":"ID=359bcbf2-8628-4c5c-9cd5-b2a854a391e9"}
+            cookies = {"MVMSession":"ID=c721a245-35e4-4b40-ba1d-b947403f27da"}
             # cookies = {"_ga_ZNLJF35KPL":"GS1.1.1706998240.1.0.1706998240.0.0.0"}
             summary_page = requests.get(next_url, cookies=cookies, verify=False)
             # summary_page = requests.get(
@@ -132,7 +131,6 @@ def merton_bot(startdate, enddate, wordlist):
             # )
             next_page_soup = BeautifulSoup(summary_page.content, "html.parser")
             applicant_sections = next_page_soup.find_all('ul', class_='list')
-            print(applicant_sections)
             sections = applicant_sections[1]
             applicant_span = sections.find('span', text='Applicant')
             parent_div = applicant_span.find_parent('div')
@@ -144,28 +142,24 @@ def merton_bot(startdate, enddate, wordlist):
             name_list.append(applicant_name)
             print(applicant_name)
 
-        try:
-            # next_a_tag = driver.find_element(By.CLASS_NAME, 'noborder')
-            # print(next_a_tag)
-            # next_a_tag = driver.find_element(By.XPATH, "//a[@title='Go to next page ']")
-            a_tag = driver.find_element(By.CSS_SELECTOR, 'a[title="Go to next page "]')
-            print(a_tag)
-
-
-            time.sleep(5)
-            # If the element is found, you can interact with it here
+        
+        
+        
+        try: 
+            next_a_tag = soup.find('img', {'title': 'Go to next page '})
+        except:
+            next_a_tag = False
+    
+        if (next_a_tag):
             multiple_pages = True
+            next_a_tag = driver.find_element(By.CLASS_NAME, 'noborder')
             action = ActionChains(driver)
             action.move_to_element(next_a_tag).click().perform()
-            # time.sleep(2)
-            # next_a_tag.click()
-            
-        except:
+   
+        else:
             # If the element is not found, handle the exception here
             multiple_pages = False
             print("Element not found. Continuing without clicking.")
-
-
 
 
     merge_data = zip(name_list, address_list)
