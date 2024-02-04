@@ -7,7 +7,10 @@ body {
     font-weight: 300;
     margin: 0;
     height: 100%;
-    background-color: #070B14;
+    /* background-color: #070B14; */
+    background-color: white;
+    /* background: linear-gradient(to bottom,white, #c3faec, white); */
+    /* background-image: linear-gradient(45deg, rgb(138, 84, 255), rgb(173 145 194)); */
 }
 
 .wrapper {
@@ -15,7 +18,6 @@ body {
     position: relative;
     padding-bottom: 20em; /* Height of footer */
     min-height: 100vh;
-    /* padding: 0px 40px; */
 }
 
 footer {
@@ -100,7 +102,7 @@ a {
         background-color: #fcf6f4;
         width: 2rem;
         aspect-ratio: 1;
-        top: 2rem;
+        top: 1rem;
         right: 2rem;
         z-index: 9999;
         background: none;
@@ -366,9 +368,9 @@ table tr:nth-child(even) {
 .pagination li:hover {
     cursor: pointer;
 }
-table tbody tr {
+/* table tbody tr {
     display: none;
-}
+} */
 
 .home-img {
     height: 100%;
@@ -712,3 +714,41 @@ table tbody tr {
     width: 100%;
     margin-top: 30px;
 }
+
+
+.sidebar {
+    height: 100vh;
+    width: 200px;
+    display: static;
+    float: left;
+    border-right: 1px solid #E5E8EB;
+}
+
+.tabs {
+    font-size: 20px;
+}
+
+.tabs a {
+    margin-right: 20px;
+}
+
+.tabs a:hover {
+    border-bottom: 1px solid #E5E8EB;
+    color: blue;
+}
+
+.border-b {
+    border-bottom: 1px solid #E5E8EB;
+    padding: 10px 0px;
+}
+
+.add-btn {
+    background-color: #0281F1;
+    color: white !important;
+}
+
+.tbody-border {
+    border: 1px solid #E5E8EB;
+    font-size: 12px;
+}
+

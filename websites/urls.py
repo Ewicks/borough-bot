@@ -16,6 +16,7 @@ urlpatterns = [
     path('kensington_chelsea/', views.kensington_chelsea, name='kensington_chelsea'),
     path('hammersmith_fulham/', views.hammersmith_fulham, name='hammersmith_fulham'),
     path('results', views.results, name='results'),
+    path('reviews', views.reviews, name='reviews'),
     path('test', views.test, name='test'),
     path('pricing', views.pricing, name='pricing'),
     path('contact', views.contact, name='contact'),
