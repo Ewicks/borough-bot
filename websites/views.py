@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+import json
 
 
 
@@ -344,6 +345,7 @@ def results(request):
 
         data_list = my_list[0]
         num_results = my_list[1]
+        data_list_json = json.dumps(data_list)
         # Open the Google Spreadsheet using its title
         # Set up the credentials
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -385,6 +387,7 @@ def results(request):
                 startdate=startdate,
                 enddate=enddate,
                 results_number=num_results,
+                data=data_list_json,
                 date_added=timezone.now()  # Add the current date and time
             )
             scrape_results = Scrape.objects.filter(user=user_instance)

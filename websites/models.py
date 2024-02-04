@@ -21,6 +21,9 @@ class Scrape(models.Model):
     enddate = models.DateField()
     date_added = models.DateTimeField(auto_now_add=True)
     results_number = models.IntegerField()
+    data = models.JSONField(null=True)
+
+
 
     def __str__(self):
         return f"{self.borough} {self.startdate} {self.enddate}"
