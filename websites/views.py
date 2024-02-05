@@ -308,17 +308,13 @@ def guildford(request):
     return render(request, 'guildford.html', context)
 
 
-
 def download_spreadsheet(request, pk):
     scrape_instance = get_object_or_404(Scrape, pk=pk)
 
-    # Implement your logic to download the Google Spreadsheet here
-    # You may want to use a library like gspread or other methods
+    # Retrieve the worksheet file content
+    worksheet_content = scrape_instance.worksheet_file.read()
 
-    # For demonstration purposes, let's assume you have a content variable
-    content = "Spreadsheet content goes here"
-
-    response = HttpResponse(content, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response = HttpResponse(worksheet_content, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="{scrape_instance.borough}_results.xlsx"'
     return response
 
@@ -337,14 +333,6 @@ def view_results(request, pk):
     }
 
     return render(request, 'view_results.html', context)
-
-def download_spreadsheet(request, scrape_instance):
-    # Retrieve the worksheet file content
-    worksheet_content = scrape_instance.worksheet_file.read()
-
-    response = HttpResponse(worksheet_content, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename="{scrape_instance.borough}_results.xlsx"'
-    return response
 
 
 def results(request):
@@ -442,11 +430,9 @@ def results(request):
             )
             scrape_instance.worksheet_file.save(f"{scrape_instance.borough}_worksheet.xlsx", worksheet_file)
             response = HttpResponse(worksheet_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            print(response)
             aaa = response['Content-Disposition'] = f'attachment; filename="{scrape_instance.borough}_results.xlsx'
             print(aaa)
-            # download_response = download_spreadsheet(request, scrape_instance)
-            # print(download_response)
+            print(scrape_instance)
 
             scrape_results = Scrape.objects.filter(user=user_instance)
 
