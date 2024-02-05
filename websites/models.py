@@ -21,6 +21,7 @@ class Scrape(models.Model):
     enddate = models.DateField()
     date_added = models.DateTimeField(auto_now_add=True)
     results_number = models.IntegerField()
+    worksheet_file = models.FileField(upload_to='worksheet_files/', null=True, blank=True)
     data = models.JSONField(null=True)
 
 

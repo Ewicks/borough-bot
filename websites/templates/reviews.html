@@ -67,11 +67,16 @@
                           <td>{{ item.enddate }}</td>
                           <td>{{ item.results_number }}</td>
                           <td>
-                            <a class="text-dark" href="{% url 'view_results' pk=item.pk %}">
+                            <a class="text-dark" href="{% url 'view_results' pk=item.pk %}" target="_blank">
                                 View
                             </a>
-                        </td>
-                          <td>{{ item.download_results }}</td>
+                          </td>
+                          <!-- Add this next to the "View Results" link -->
+                          <td>
+                            <a class="text-dark" href="{% url 'download_spreadsheet' pk=item.pk %}" target="_blank" download>
+                              Download
+                            </a>
+                          </td>
                           <td>{{ item.date_added }}</td>
                           <td>
                             <a class="text-dark" href="{% url 'delete_scrape' pk=item.pk %}">

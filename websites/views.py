@@ -17,9 +17,10 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404
 import json
+from django.http import HttpResponse
+from django.core.files.base import ContentFile
 
 
 
@@ -307,6 +308,21 @@ def guildford(request):
     return render(request, 'guildford.html', context)
 
 
+
+def download_spreadsheet(request, pk):
+    scrape_instance = get_object_or_404(Scrape, pk=pk)
+
+    # Implement your logic to download the Google Spreadsheet here
+    # You may want to use a library like gspread or other methods
+
+    # For demonstration purposes, let's assume you have a content variable
+    content = "Spreadsheet content goes here"
+
+    response = HttpResponse(content, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="{scrape_instance.borough}_results.xlsx"'
+    return response
+
+
 def view_results(request, pk):
     scrape_instance = get_object_or_404(Scrape, pk=pk)
     print(scrape_instance.startdate)
@@ -321,6 +337,14 @@ def view_results(request, pk):
     }
 
     return render(request, 'view_results.html', context)
+
+def download_spreadsheet(request, scrape_instance):
+    # Retrieve the worksheet file content
+    worksheet_content = scrape_instance.worksheet_file.read()
+
+    response = HttpResponse(worksheet_content, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="{scrape_instance.borough}_results.xlsx"'
+    return response
 
 
 def results(request):
@@ -388,6 +412,15 @@ def results(request):
 
         # Write data to the spreadsheet
         worksheet.append_rows(data_to_write)
+        # print(testing)
+        worksheet_content = worksheet.get_all_values()
+        worksheet_data = "\n".join(["\t".join(row) for row in worksheet_content])
+        worksheet_file = ContentFile(worksheet_data.encode('utf-8'))
+
+        # Update the Scrape instance with the worksheet file
+        print(worksheet_file)
+        # worksheet_file.save("worksheet.txt", worksheet_file)
+        
 
         # Close the connection
         creds = None
@@ -395,16 +428,26 @@ def results(request):
         if request.user and request.user.is_authenticated:
             user_instance = request.user
 
+
             # Create a new Scrape instance associated with the authenticated user
-            Scrape.objects.create(
+            scrape_instance = Scrape.objects.create(
                 user=user_instance,
                 borough=borough,
                 startdate=startdate,
                 enddate=enddate,
                 results_number=num_results,
                 data=data_list_json,
-                date_added=timezone.now()  # Add the current date and time
+                # worksheet_file=worksheet_file,
+                date_added=timezone.now()
             )
+            scrape_instance.worksheet_file.save(f"{scrape_instance.borough}_worksheet.xlsx", worksheet_file)
+            response = HttpResponse(worksheet_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            print(response)
+            aaa = response['Content-Disposition'] = f'attachment; filename="{scrape_instance.borough}_results.xlsx'
+            print(aaa)
+            # download_response = download_spreadsheet(request, scrape_instance)
+            # print(download_response)
+
             scrape_results = Scrape.objects.filter(user=user_instance)
 
 
