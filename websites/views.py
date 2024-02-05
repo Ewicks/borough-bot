@@ -77,10 +77,10 @@ def richmond(request):
     dateform = DateForm()
 
     if request.method == 'POST':
-        form = WordForm(request.POST)
+        form = WordForm(request.POST or None)
         if form.is_valid():
             word_instance = form.save(commit=False)
-            word_instance.user = request.user  # Associate the word with the current user
+            word_instance.user = request.user
             word_instance.save()
             return redirect('richmond')
 
@@ -93,13 +93,16 @@ def richmond(request):
 
 
 def kensington_chelsea(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user 
+            word_instance.save()
             print(form)
             form.save()
         return redirect('kensington_chelsea')
@@ -112,13 +115,16 @@ def kensington_chelsea(request):
     return render(request, 'kensington_chelsea.html', context)
 
 def epsom(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user 
+            word_instance.save()
             print(form)
             form.save()
         return redirect('epsom')
@@ -131,13 +137,17 @@ def epsom(request):
     return render(request, 'epsom.html', context)
 
 def merton(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
+    
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user 
+            word_instance.save()
             print(form)
             form.save()
         return redirect('merton')
@@ -150,13 +160,16 @@ def merton(request):
     return render(request, 'merton.html', context)
 
 def bromley(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user 
+            word_instance.save()
             print(form)
             form.save()
         return redirect('bromley')
@@ -169,13 +182,16 @@ def bromley(request):
     return render(request, 'bromley.html', context)
 
 def hammersmith_fulham(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user
+            word_instance.save()
             print(form)
             form.save()
         return redirect('hammersmith_fulham')
@@ -188,13 +204,16 @@ def hammersmith_fulham(request):
     return render(request, 'hammersmith_fulham.html', context)
 
 def woking(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user
+            word_instance.save()
             print(form)
             form.save()
         return redirect('woking')
@@ -207,13 +226,16 @@ def woking(request):
     return render(request, 'woking.html', context)
 
 def lewisham(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user
+            word_instance.save()
             print(form)
             form.save()
         return redirect('lewisham')
@@ -226,13 +248,16 @@ def lewisham(request):
     return render(request, 'lewisham.html', context)
 
 def elmbridge(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
     if request.method == 'POST':
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user
+            word_instance.save()
             print(form)
             form.save()
         return redirect('elmbridge')
@@ -245,7 +270,7 @@ def elmbridge(request):
     return render(request, 'elmbridge.html', context)
 
 def kingston(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
@@ -254,6 +279,9 @@ def kingston(request):
         print(request.POST)
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user
+            word_instance.save()
             print(form)
             form.save()
         return redirect('kingston')
@@ -266,7 +294,7 @@ def kingston(request):
     return render(request, 'kingston.html', context)
 
 def southwark(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
@@ -275,6 +303,9 @@ def southwark(request):
         print(request.POST)
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user
+            word_instance.save()
             print(form)
             form.save()
         return redirect('southwark')
@@ -287,7 +318,7 @@ def southwark(request):
     return render(request, 'southwark.html', context)
 
 def guildford(request):
-    words = Word.objects.all()
+    words = Word.objects.filter(user=request.user)
     form = WordForm()
     dateform = DateForm()
 
@@ -296,6 +327,9 @@ def guildford(request):
         print(request.POST)
         form = WordForm(request.POST or None)
         if form.is_valid():
+            word_instance = form.save(commit=False)
+            word_instance.user = request.user
+            word_instance.save()
             print(form)
             form.save()
         return redirect('guildford')
