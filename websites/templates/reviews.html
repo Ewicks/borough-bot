@@ -1,100 +1,113 @@
 {% load static %}
 
-
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <!-- Include Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
     <div class="sidebar">
-        <h1>test</h1>
-        <a href="">
-          <i class="fa-solid fa-trash"></i>
-        </a>
+      <h1>test</h1>
+      <a href="">
+        <i class="fa-solid fa-trash"></i>
+      </a>
     </div>
     <div class="container-fluid">
-        <div class="row">
-          <div class="col d-flex justify-content-start align-items-center mx-5 ">
-            <h2 class="pt-5 px-5">Scraping Infrastructure</h2>
+      <div class="row">
+        <div class="col d-flex justify-content-start align-items-center mx-5">
+          <h2 class="pt-5 px-5">Scraping Infrastructure</h2>
+        </div>
+      </div>
+      <div class="row border-b">
+        <div class="col d-flex justify-content-start align-items-center mx-5">
+          <div class="tabs fs-6 px-5 mt-3">
+            <a class="text-dark" href="">My Scrapes</a>
+            <a class="text-dark" href="">Dashboard</a>
+            <a class="text-dark" href="">Contact Support</a>
           </div>
         </div>
-        <div class="row border-b">
-          <div class="col d-flex justify-content-start align-items-center mx-5 ">
-            <div class="tabs fs-6 px-5 mt-3">
-                <a class="text-dark" href="">My Scrapes</a>
-                <a class="text-dark" href="">Dashboard</a>
-                <a class="text-dark" href="">Contact Support</a>
-            </div>
-          </div>
-        </div>
+      </div>
 
-        <div class="row my-3">
-            <div class="col px-5 d-flex justify-content-end">
-                <a href="" class="btn add-btn">Add</a>
-            </div>
+      <div class="row my-3">
+        <div class="col px-5 d-flex justify-content-end">
+          <a href="" class="btn add-btn">Add</a>
         </div>
+      </div>
 
-        <div class="row my-3">
-            <div class="col px-5">
-                <table class="table table-borderless">
-                    <thead class="tbody-border">
-                        <tr>
-                          <th class="fw-light" scope="col">Borough</th>
-                          <th class="fw-light" scope="col">Start Date</th>
-                          <th class="fw-light" scope="col">End Date</th>
-                          <th class="fw-light" scope="col">Results number</th>
-                          <th class="fw-light" scope="col">View Results</th>
-                          <th class="fw-light" scope="col">Download Results</th>
-                          <th class="fw-light" scope="col">Date Of Scrape</th>
-                          <th class="fw-light" scope="col">Delete</th>
-                          
-                        </tr>
-                      </thead>
-                      <tbody class="tbody-border fw-normal">
-                        {% for item in scrape_results %}
-                        <tr>
-                          <td>{{ item.borough }}</td>
-                          <td>{{ item.startdate }}</td>
-                          <td>{{ item.enddate }}</td>
-                          <td>{{ item.results_number }}</td>
-                          <td>
-                            <a class="text-dark" href="{% url 'view_results' pk=item.pk %}" target="_blank">
-                                View
-                            </a>
-                          </td>
-                          <!-- Add this next to the "View Results" link -->
-                          <td>
-                            <a class="text-dark" href="{% url 'download_spreadsheet' pk=item.pk %}" target="_blank" download>
-                              Download
-                            </a>
-                          </td>
-                          <td>{{ item.date_added }}</td>
-                          <td>
-                            <a class="text-dark" href="{% url 'delete_scrape' pk=item.pk %}">
-                              delete
-                            </a>
-                          </td>
-                        </tr>
-                      {% endfor %}
-                      </tbody>
-                    
-                </table>
-               
-                
-                
-            </div>
+      <div class="row my-3">
+        <div class="col px-5">
+          <table class="table table-borderless">
+            <thead class="tbody-border">
+              <tr>
+                <th class="fw-light" scope="col">Borough</th>
+                <th class="fw-light" scope="col">Start Date</th>
+                <th class="fw-light" scope="col">End Date</th>
+                <th class="fw-light" scope="col">Results number</th>
+                <th class="fw-light" scope="col">View Results</th>
+                <th class="fw-light" scope="col">Download Results</th>
+                <th class="fw-light" scope="col">Date Of Scrape</th>
+                <th class="fw-light" scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody class="tbody-border fw-normal">
+              {% for item in scrape_results %}
+              <tr>
+                <td>{{ item.borough }}</td>
+                <td>{{ item.startdate }}</td>
+                <td>{{ item.enddate }}</td>
+                <td>{{ item.results_number }}</td>
+                <td>
+                  <a
+                    class="text-dark"
+                    href="{% url 'view_results' pk=item.pk %}"
+                    target="_blank"
+                  >
+                    View
+                  </a>
+                </td>
+                <!-- Add this next to the "View Results" link -->
+                <td>
+                  <a
+                    class="text-dark"
+                    href="{% url 'download_spreadsheet' pk=item.pk %}"
+                    target="_blank"
+                    download
+                  >
+                    <i class="fa-solid fa-download"></i>
+                  </a>
+                </td>
+                <td>{{ item.date_added }}</td>
+                <td>
+                  <a
+                    class="text-dark"
+                    href="{% url 'delete_scrape' pk=item.pk %}"
+                  >
+                    <i class="fa-solid fa-trash fa-fw"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
 
-  <script src="https://kit.fontawesome.com/b2fe83387a.js" crossorigin="anonymous"></script>
-</body>
+    <script
+      src="https://kit.fontawesome.com/b2fe83387a.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

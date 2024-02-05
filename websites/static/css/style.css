@@ -761,7 +761,11 @@ tr:hover {
    
 }
 
-.fa-trash {
-    color: black !important;
-    font-size: 20px;
+.fa-solid {
+    color: gray !important;
+    font-size: 15px;
 }
+
+td a i {
+    position: unset;
+} 
