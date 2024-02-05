@@ -743,8 +743,26 @@ table tr:nth-child(even) {
 }
 
 .add-btn {
-    background-color: #0281F1;
+    background-color: #0069DC;
     color: white !important;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.add-btn::after {
+    content: none;
+}
+
+.add-btn:hover {
+    background-color: #0281F1;
+}
+
+.add-btn.show {
+    background-color: #0069DC;
+}
+
+.add-btn.show-visable {
+    background-color: #000;
 }
 
 .tbody-border {
