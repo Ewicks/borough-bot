@@ -307,24 +307,22 @@ def guildford(request):
     return render(request, 'guildford.html', context)
 
 
+def view_results(request, pk):
+    scrape_instance = get_object_or_404(Scrape, pk=pk)
+
+    data_list = json.loads(scrape_instance.data)
+    num_results = scrape_instance.results_number
+
+    context = {
+        'num_results': num_results,
+        'data_list': data_list,
+        'scrape_instance': scrape_instance,
+    }
+
+    return render(request, 'view_results.html', context)
 
 
 def results(request):
-    # if request.method == 'GET':
-    #     # Handle GET request to directly view results
-    #     scrape_id = request.GET.get('scrape_id')
-    #     scrape_instance = get_object_or_404(Scrape, pk=scrape_id)
-
-    #     data_list = json.loads(scrape_instance.data)
-    #     num_results = scrape_instance.results_number
-    #     print(num_results)
-
-    #     context = {
-    #         'num_results': num_results,
-    #         'scrape_instance': scrape_instance,
-    #     }
-
-    #     return render(request, 'results.html', context)
       
     if request.method == 'POST':
         datesdict = request.POST.dict()

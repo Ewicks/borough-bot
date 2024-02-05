@@ -16,6 +16,7 @@ urlpatterns = [
     path('kensington_chelsea/', views.kensington_chelsea, name='kensington_chelsea'),
     path('hammersmith_fulham/', views.hammersmith_fulham, name='hammersmith_fulham'),
     path('results', views.results, name='results'),
+     path('view_results/<int:pk>/', views.view_results, name='view_results'),
     path('reviews', views.reviews, name='reviews'),
     path('delete_scrape/<int:pk>/', views.delete_scrape, name='delete_scrape'),
 
