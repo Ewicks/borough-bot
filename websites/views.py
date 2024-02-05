@@ -54,6 +54,14 @@ def reviews(request):
     }
     return render(request, 'reviews.html', context)
 
+def bots(request):
+    scrape_results = Scrape.objects.all()
+
+    context = {
+        'scrape_results': scrape_results,
+    }
+    return render(request, 'bots.html', context)
+
 def delete_scrape(request, pk):
     scrape = get_object_or_404(Scrape, pk=pk)
     redirect_to = 'reviews'  # Replace with your actual redirect view name

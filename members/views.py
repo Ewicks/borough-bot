@@ -11,7 +11,7 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('test')
+            return redirect('bots')
         else:
             messages.success(request, ('There was an error logging in '))
             return redirect('login')
@@ -22,7 +22,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     messages.success(request, ('You have successfully logged out'))
-    return redirect('test')
+    return redirect('/')
 
 
 
