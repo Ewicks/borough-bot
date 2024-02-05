@@ -309,6 +309,7 @@ def guildford(request):
 
 def view_results(request, pk):
     scrape_instance = get_object_or_404(Scrape, pk=pk)
+    print(scrape_instance.startdate)
 
     data_list = json.loads(scrape_instance.data)
     num_results = scrape_instance.results_number
