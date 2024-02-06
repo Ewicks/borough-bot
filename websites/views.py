@@ -29,11 +29,12 @@ from django.core.files.base import ContentFile
 def home(request):
     return render(request, 'index.html', {})
 
-def get_word_objects():
-	words = Word.objects.values_list('word', flat=True)
-	objectlist = list(words)
+def get_word_objects(request):
+    words = Word.objects.filter(user=request.user).values_list('word', flat=True)
+	# words = Word.objects.values_list('word', flat=True)
+    objectlist = list(words)
 
-	return objectlist
+    return objectlist
 
 def test(request):
     return render(request, 'test.html', {})
@@ -61,7 +62,7 @@ def reviews(request):
 
 def delete_scrape(request, pk):
     scrape = get_object_or_404(Scrape, pk=pk)
-    redirect_to = 'reviews'  
+    redirect_to = 'bots'  
     scrape.delete()
   
     return redirect(reverse(redirect_to))
@@ -382,7 +383,7 @@ def results(request):
         datesdict = request.POST.dict()
         startdate = datesdict['startdate']
         enddate = datesdict['enddate']
-        wordlist = get_word_objects()
+        wordlist = get_word_objects(request)
         print(request.POST)
         borough = request.POST.get('borough')
         print(borough)

@@ -41,6 +41,7 @@ def elmbridge_bot(startdate, enddate, wordlist):
 
     words = convert(wordlist)
     words_search_for = words.rstrip(words[-1])
+    print(words_search_for)
 
     # lists
     row_list = []
@@ -108,11 +109,13 @@ def elmbridge_bot(startdate, enddate, wordlist):
             row_list.append(row)
 
     print(len(row_list))
+    num_results = len(row_list)
     for row in row_list:
         # Find the address and add to address_list
         address_div = row.find('td', class_='address')
         address = address_div.text.strip()
         address_list.append(address)
+        print(address)
         a_tag = row.find('a')
         next_url = a_tag.get('href')
         summary_page = requests.get(next_url, verify=False)
@@ -133,14 +136,18 @@ def elmbridge_bot(startdate, enddate, wordlist):
         link_atag = (f'{base_url}{info_href}')
         further_info = requests.get(link_atag, verify=False)
         further_info_soup = BeautifulSoup(further_info.content, "html.parser")
-        print(further_info_soup)
-        applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
-        applicant_name = applicant_row.get_text(strip=True)
-
-        print(applicant_name)
-        name_list.append(applicant_name)
-
-
+        name_section = further_info_soup.find('div', class_='atLeftPanel')
+        try:
+            name_dt = name_section.find('dt', text="Applicant Name :")
+            if name_dt:
+                dd_tag = name_dt.find_next_sibling('dd')
+                name = dd_tag.text.strip()
+                print(name)
+                name_list.append(name)
+            
+        except:
+            name = 'n/a'
+            name_list.append(name)
 
 
     merge_data = zip(name_list, address_list)
@@ -149,7 +156,8 @@ def elmbridge_bot(startdate, enddate, wordlist):
         data.append(item)
 
     print(data)
-    return data
-
     # Close the browser window
     driver.quit()
+    return data, num_results
+
+   
