@@ -47,12 +47,8 @@ def about(request):
     return render(request, 'about.html', {})
 
 def reviews(request):
-    scrape_results = Scrape.objects.all()
 
-    context = {
-        'scrape_results': scrape_results,
-    }
-    return render(request, 'reviews.html', context)
+    return render(request, 'reviews.html', {})
 
 def bots(request):
     scrape_results = Scrape.objects.all()
@@ -64,7 +60,7 @@ def bots(request):
 
 def delete_scrape(request, pk):
     scrape = get_object_or_404(Scrape, pk=pk)
-    redirect_to = 'reviews'  # Replace with your actual redirect view name
+    redirect_to = 'reviews'  
     scrape.delete()
   
     return redirect(reverse(redirect_to))
@@ -378,6 +374,8 @@ def view_results(request, pk):
 
 
 def results(request):
+    scrape_results = Scrape.objects.all()
+
       
     if request.method == 'POST':
         datesdict = request.POST.dict()
@@ -486,6 +484,6 @@ def results(request):
 
         }
 
-        return render(request, 'reviews.html', context)
+        return render(request, 'bots.html', context)
 
 

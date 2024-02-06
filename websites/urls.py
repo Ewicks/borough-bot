@@ -15,8 +15,7 @@ urlpatterns = [
     path('lewisham/', views.lewisham, name='lewisham'),
     path('kensington_chelsea/', views.kensington_chelsea, name='kensington_chelsea'),
     path('hammersmith_fulham/', views.hammersmith_fulham, name='hammersmith_fulham'),
-    path('results', views.results, name='results'),
-     path('view_results/<int:pk>/', views.view_results, name='view_results'),
+    path('view_results/<int:pk>/', views.view_results, name='view_results'),
     path('reviews', views.reviews, name='reviews'),
     path('delete_scrape/<int:pk>/', views.delete_scrape, name='delete_scrape'),
     path('download_spreadsheet/<int:pk>/', views.download_spreadsheet, name='download_spreadsheet'),
@@ -24,6 +23,6 @@ urlpatterns = [
     path('pricing', views.pricing, name='pricing'),
     path('contact', views.contact, name='contact'),
     path('about', views.about, name='about'),
-    path('bots', views.bots, name='bots'),
+    path('bots', views.results, name='bots'),
     path('deleteword/<int:pk>/<str:redirect_to>/', views.deleteword, name='deleteword'),
 ]
