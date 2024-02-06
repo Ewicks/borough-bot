@@ -575,6 +575,11 @@ span i {
     width: 100%;
 }
 
+.contact-point i {
+    position: absolute;
+    line-height: unset;
+}
+
 .border-right {
     border-right: 1px solid white;
 
