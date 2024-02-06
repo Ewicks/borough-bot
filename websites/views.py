@@ -50,13 +50,13 @@ def reviews(request):
 
     return render(request, 'reviews.html', {})
 
-def bots(request):
-    scrape_results = Scrape.objects.all()
+# def bots(request):
+#     scrape_results = Scrape.objects.all()
 
-    context = {
-        'scrape_results': scrape_results,
-    }
-    return render(request, 'bots.html', context)
+#     context = {
+#         'scrape_results': scrape_results,
+#     }
+#     return render(request, 'bots.html', context)
 
 def delete_scrape(request, pk):
     scrape = get_object_or_404(Scrape, pk=pk)
@@ -373,8 +373,8 @@ def view_results(request, pk):
     return render(request, 'view_results.html', context)
 
 
+@login_required
 def results(request):
-    scrape_results = Scrape.objects.all()
 
       
     if request.method == 'POST':
@@ -484,6 +484,13 @@ def results(request):
 
         }
 
+        return render(request, 'bots.html', context)
+    else:
+        scrape_results = Scrape.objects.filter(user=request.user)
+
+        context = {
+            'scrape_results': scrape_results,
+        }
         return render(request, 'bots.html', context)
 
 
