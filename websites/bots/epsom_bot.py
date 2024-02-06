@@ -82,6 +82,7 @@ def epsom_bot(startdate, enddate, wordlist):
 
     next_a_tag = None
     multiple_pages = True
+    num_results = 0
 
 
 
@@ -109,6 +110,7 @@ def epsom_bot(startdate, enddate, wordlist):
                 row_list.append(row)
 
         print(len(row_list))
+        num_results += len(row_list)
         for row in row_list:
             # Find the address and add to address_list
             address_div = row.find('p', class_='address')
@@ -155,7 +157,8 @@ def epsom_bot(startdate, enddate, wordlist):
         data.append(item)
 
     print(data)
-    return data
-
     # Close the browser window
     driver.quit()
+    return data, num_results
+
+ 

@@ -82,6 +82,7 @@ def merton_bot(startdate, enddate, wordlist):
     wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'display_table')))
 
     multiple_pages = True
+    num_results = 0
 
     while (multiple_pages):
 
@@ -108,6 +109,7 @@ def merton_bot(startdate, enddate, wordlist):
                 row_list.append(row)
 
         print(len(row_list))
+        num_results += len(row_list)
         for row in row_list:
             address_div = row.find('td', {'title': 'Site Address'})
             address = address_div.text.strip()
@@ -142,9 +144,6 @@ def merton_bot(startdate, enddate, wordlist):
             name_list.append(applicant_name)
             print(applicant_name)
 
-        
-        
-        
         try: 
             next_a_tag = soup.find('img', {'title': 'Go to next page '})
         except:
@@ -168,6 +167,7 @@ def merton_bot(startdate, enddate, wordlist):
         data.append(item)
 
     print(data)
-    return data
-
     driver.quit()
+
+    return data, num_results
+

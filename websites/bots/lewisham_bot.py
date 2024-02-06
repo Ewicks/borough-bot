@@ -22,25 +22,6 @@ if os.path.isfile('env.py'):
 def lewisham_bot(startdate, enddate, wordlist):
 
     API_KEY = os.getenv('API-KEY', '')
-    print(API_KEY)
-
-    # Function to split dates
-    def split_dates(start_date_str, end_date_str):
-        date_format = "%d/%m/%Y"
-        start_date = datetime.strptime(start_date_str, date_format)
-        end_date = datetime.strptime(end_date_str, date_format)
-
-        date_ranges = []
-        current_date = start_date
-
-        while current_date <= end_date:
-            next_date = current_date + timedelta(days=10)
-            if next_date > end_date:
-                next_date = end_date
-            date_ranges.append((current_date.strftime(date_format), next_date.strftime(date_format)))
-            current_date = next_date + timedelta(days=1)
-
-        return date_ranges
 
     # Function to convert wordlist to regex pattern
     def convert(s):
@@ -66,122 +47,113 @@ def lewisham_bot(startdate, enddate, wordlist):
     parsed_enddate = pd.to_datetime(enddate, format='%Y/%m/%d')
     reversed_startdate = parsed_startdate.strftime('%d/%m/%Y')
     reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
-    list_of_dates = split_dates(reversed_startdate, reversed_enddate)
 
 
-    for x in list_of_dates:
+    # Set up the WebDriver with user agent rotation
+    ua = UserAgent()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument(f"user-agent={ua.random}")
+    chrome_options.add_argument('headless')
+    driver = webdriver.Chrome(options=chrome_options)
 
-        reversed_startdate = x[0]
-        reversed_enddate = x[1]
-        print(reversed_startdate)
-        print(reversed_enddate)
+    # Set up proxy for IP rotation (replace 'your_proxy_url' with your actual proxy URL)
+    proxy_url = 'http://144.217.237.177:47016'
+    chrome_options.add_argument(f'--proxy-server={proxy_url}')
 
-        # Set up the WebDriver with user agent rotation
-        ua = UserAgent()
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument(f"user-agent={ua.random}")
-        chrome_options.add_argument('headless')
-        driver = webdriver.Chrome(options=chrome_options)
+    base_url = 'https://planning.lewisham.gov.uk/'
 
-        # Set up proxy for IP rotation (replace 'your_proxy_url' with your actual proxy URL)
-        proxy_url = 'http://144.217.237.177:47016'
-        chrome_options.add_argument(f'--proxy-server={proxy_url}')
+    url = 'https://planning.lewisham.gov.uk/online-applications/search.do?action=advanced'
+    driver.get(url)
 
-        base_url = 'https://planning.lewisham.gov.uk/'
+    # Input start and end dates
+    input_element1 = driver.find_element(By.ID, 'applicationReceivedStart')
+    input_element2 = driver.find_element(By.ID, 'applicationReceivedEnd')
+    input_element1.send_keys(reversed_startdate)
+    input_element2.send_keys(reversed_enddate)
 
-        url = 'https://planning.lewisham.gov.uk/online-applications/search.do?action=advanced'
-        driver.get(url)
+    # Click the search button
+    search_element = driver.find_element(By.CLASS_NAME, 'recaptcha-submit')
+    search_element.click()
+    
 
-        # Input start and end dates
-        input_element1 = driver.find_element(By.ID, 'applicationReceivedStart')
-        input_element2 = driver.find_element(By.ID, 'applicationReceivedEnd')
-        input_element1.send_keys(reversed_startdate)
-        input_element2.send_keys(reversed_enddate)
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
 
-        # Click the search button
-        search_element = driver.find_element(By.CLASS_NAME, 'recaptcha-submit')
-        search_element.click()
 
-        # Wait for the page to load (you may need to adjust the waiting time)
+    # Select 100 and submit to show max results
+    num_results_element = Select(driver.find_element(By.ID, 'resultsPerPage'))
+    num_results_element.select_by_visible_text('100')
+    num_results_go = driver.find_element(By.CLASS_NAME, 'primary')
+    num_results_go.click()
+
+    next_a_tag = None
+    multiple_pages = True
+    num_results = 0
+
+    while multiple_pages:
+        wait = WebDriverWait(driver, 10)
+        wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
+
+        # Rest of your existing code for scraping and handling multiple pages
+        page_source = driver.page_source
+        soup = BeautifulSoup(page_source, 'html.parser')
+        searchResultsPage = soup.find('div', class_='col-a')
+        searchResults = searchResultsPage.find_all('li', class_='searchresult')
+        row_list = []
+
+        for row in searchResults:
+            address_div = row.find('a')
+            address_desc = address_div.text
+
+            if re.search(words_search_for, address_desc, flags=re.I):
+                row_list.append(row)
+
+        print(len(row_list))
+        num_results += len(row_list)
+        for row in row_list:
+            # Find the address and add to address_list
+            address_div = row.find('p', class_='address')
+            address = address_div.text.strip()
+            address_list.append(address)
+            print(address)
+
+            a_tag = row.find('a')
+            href_value = a_tag.get('href')
+            test_url = f'{base_url}{href_value}'
+            summary_page = requests.get(
+                url='https://app.scrapingbee.com/api/v1/',
+                params={
+                    'api_key': API_KEY,
+                    'url': test_url,  
+                },
+            )
+            summary_soup = BeautifulSoup(summary_page.content, "html.parser")
+            info_tab = summary_soup.find(id='subtab_details')
+            info_href = info_tab.get('href')
+            info_atag = f'{base_url}{info_href}'
+            # further_info = requests.get(info_atag, verify=False)
+            further_info = requests.get(
+                url='https://app.scrapingbee.com/api/v1/',
+                params={
+                    'api_key': API_KEY,
+                    'url': info_atag,  
+                },
+            )
+            further_info_soup = BeautifulSoup(further_info.content, "html.parser")
+            applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
+            applicant_name = applicant_row.get_text(strip=True)
+
+            print(applicant_name)
+            name_list.append(applicant_name)
+
         try:
-
-            wait = WebDriverWait(driver, 10)
-            wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
-        except:
-            continue
-
-        # Select 100 and submit to show max results
-        num_results_element = Select(driver.find_element(By.ID, 'resultsPerPage'))
-        num_results_element.select_by_visible_text('100')
-        num_results_go = driver.find_element(By.CLASS_NAME, 'primary')
-        num_results_go.click()
-
-        next_a_tag = None
-        multiple_pages = True
-
-        while multiple_pages:
-            wait = WebDriverWait(driver, 10)
-            wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
-
-            # Rest of your existing code for scraping and handling multiple pages
-            page_source = driver.page_source
-            soup = BeautifulSoup(page_source, 'html.parser')
-            searchResultsPage = soup.find('div', class_='col-a')
-            searchResults = searchResultsPage.find_all('li', class_='searchresult')
-            row_list = []
-
-            for row in searchResults:
-                address_div = row.find('a')
-                address_desc = address_div.text
-
-                if re.search(words_search_for, address_desc, flags=re.I):
-                    row_list.append(row)
-
-            print(len(row_list))
-            for row in row_list:
-                # Find the address and add to address_list
-                address_div = row.find('p', class_='address')
-                address = address_div.text.strip()
-                address_list.append(address)
-                print(address)
-
-                a_tag = row.find('a')
-                href_value = a_tag.get('href')
-                test_url = f'{base_url}{href_value}'
-                summary_page = requests.get(
-                    url='https://app.scrapingbee.com/api/v1/',
-                    params={
-                        'api_key': API_KEY,
-                        'url': test_url,  
-                    },
-                )
-                summary_soup = BeautifulSoup(summary_page.content, "html.parser")
-                info_tab = summary_soup.find(id='subtab_details')
-                info_href = info_tab.get('href')
-                info_atag = f'{base_url}{info_href}'
-                # further_info = requests.get(info_atag, verify=False)
-                further_info = requests.get(
-                    url='https://app.scrapingbee.com/api/v1/',
-                    params={
-                        'api_key': API_KEY,
-                        'url': info_atag,  
-                    },
-                )
-                further_info_soup = BeautifulSoup(further_info.content, "html.parser")
-                applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
-                applicant_name = applicant_row.get_text(strip=True)
-
-                print(applicant_name)
-                name_list.append(applicant_name)
-
-            try:
-                next_a_tag = driver.find_element(By.CLASS_NAME, 'next')
-                multiple_pages = True
-                action = ActionChains(driver)
-                action.move_to_element(next_a_tag).click().perform()
-            except NoSuchElementException:
-                multiple_pages = False
-                print("Element not found. Continuing without clicking.")
+            next_a_tag = driver.find_element(By.CLASS_NAME, 'next')
+            multiple_pages = True
+            action = ActionChains(driver)
+            action.move_to_element(next_a_tag).click().perform()
+        except NoSuchElementException:
+            multiple_pages = False
+            print("Element not found. Continuing without clicking.")
 
     merge_data = zip(name_list, address_list)
 
@@ -189,7 +161,8 @@ def lewisham_bot(startdate, enddate, wordlist):
         data.append(item)
 
     print(data)
-    return data
-
     # Close the browser window
     driver.quit()
+    return data, num_results
+
+

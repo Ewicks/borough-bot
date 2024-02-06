@@ -18,32 +18,6 @@ import urllib3
 # bug: instead of searching for a tag name be more specific so if two rows have the same name it won duplicate.
 def kingston_bot(startdate, enddate, wordlist):
 
-    
-
-    def split_dates(start_date_str, end_date_str):
-        date_format = "%d/%m/%Y"
-        start_date = datetime.strptime(start_date_str, date_format)
-        end_date = datetime.strptime(end_date_str, date_format)
-
-        date_ranges = []
-        current_date = start_date
-
-        while current_date <= end_date:
-            next_date = current_date + timedelta(days=1)  # Add 9 days to current date
-            if next_date > end_date:
-                next_date = end_date
-            date_ranges.append((current_date.strftime(date_format), next_date.strftime(date_format)))
-            current_date = next_date + timedelta(days=1)  # Move to the next day
-
-        return date_ranges
-    
-
-
-
-
-    # wordlist = ['rear']
-    # wordlist = ['loft','ground','rear', 'erection']
-
     def convert(s):
     
         # initialization of string to ""
@@ -76,8 +50,6 @@ def kingston_bot(startdate, enddate, wordlist):
     reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
     print(reversed_startdate)
     print(reversed_enddate)
-    # list_of_dates = split_dates(reversed_startdate, reversed_enddate)
-
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
     chrome_options = webdriver.ChromeOptions()
@@ -110,6 +82,7 @@ def kingston_bot(startdate, enddate, wordlist):
 
     next_a_tag = None
     multiple_pages = True
+    num_results = 0
 
 
 
@@ -137,6 +110,7 @@ def kingston_bot(startdate, enddate, wordlist):
                 row_list.append(row)
 
         print(len(row_list))
+        num_results += len(row_list)
         for row in row_list:
             # Find the address and add to address_list
             address_div = row.find('p', class_='address')
@@ -183,7 +157,8 @@ def kingston_bot(startdate, enddate, wordlist):
         data.append(item)
 
     print(data)
-    return data
 
     # Close the browser window
     driver.quit()
+    return data, num_results
+

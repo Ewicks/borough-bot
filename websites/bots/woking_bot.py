@@ -68,6 +68,7 @@ def woking_bot(startdate, enddate, wordlist):
 
     next_a_tag = None
     multiple_pages = True
+    num_results = 0
 
     while (multiple_pages):
 
@@ -94,6 +95,7 @@ def woking_bot(startdate, enddate, wordlist):
                 row_list.append(row)
 
         print(len(row_list))
+        num_results += len(row_list)
         for row in row_list:
             # Find the address and add to address_list
             address_div = row.find('p', class_='address')
@@ -138,8 +140,6 @@ def woking_bot(startdate, enddate, wordlist):
             driver.back()
             driver.back()
             driver.execute_script("location.reload(true);")
-        
-
         try:
             next_a_tag = driver.find_element(By.CLASS_NAME, 'next')
             # If the element is found, you can interact with it here
@@ -158,9 +158,8 @@ def woking_bot(startdate, enddate, wordlist):
         data.append(item)
 
     print(data)
-
     # Close the browser window
     driver.quit()
-    return data
+    return data, num_results
 
 
