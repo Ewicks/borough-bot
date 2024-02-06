@@ -16,16 +16,17 @@
   </head>
   <body>
     <center>
-      <h2>
-        Results for {{ scrape_instance.borough }} - {{ scrape_instance.startdate}} to {{ scrape_instance.enddate }}
-      </h2>
-      <p class="mt-5">Number of Results: {{ num_results }}</p>
+     
       <div class="container">
+        <h2 class="my-5 text-start">
+          Results for {{ scrape_instance.borough }} - {{ scrape_instance.startdate}} to {{ scrape_instance.enddate }}
+        </h2>
+        <p class="mt-5">Number of Results: {{ num_results }}</p>
         <h2>Select Number Of Rows</h2>
 
         <div class="form-group">
           <!--		Show Numbers Of Rows 		-->
-          <select class="form-control" name="state" id="maxRows">
+          <select class="form-control my-3" name="state" id="maxRows">
             <option value="5000">Show ALL Rows</option>
             <option value="5">5</option>
             <option value="10">10</option>
