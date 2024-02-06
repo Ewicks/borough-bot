@@ -33,6 +33,7 @@ header {
 
 .logo-p {
     padding-left: 30px;
+    color: white;
 }
 
 .flex {
@@ -54,6 +55,7 @@ header {
 
 .primary-navigation a {
     text-decoration: none;
+    color: white;
 }
 
 .ul, li, a > span {
@@ -868,3 +870,4 @@ table tr:nth-child(even) {
 tbody tr td {
     padding: 11px 15px !important;
 }
+
