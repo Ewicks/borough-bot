@@ -14,9 +14,14 @@ import time
 import pprint
 import requests
 import urllib3
+import os
+if os.path.isfile('env.py'):
+    import env
 
 # bug: instead of searching for a tag name be more specific so if two rows have the same name it won duplicate.
 def elmbridge_bot(startdate, enddate, wordlist):
+
+    API_KEY = os.getenv('API-KEY', '')
 
     def convert(s):
     
@@ -52,13 +57,11 @@ def elmbridge_bot(startdate, enddate, wordlist):
 
 
     # Set up the WebDriver (you may need to provide the path to your chromedriver executable)
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument('headless')
-    # driver = webdriver.Chrome(options=chrome_options)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    driver = webdriver.Chrome(options=chrome_options)
 
-    driver = webdriver.Chrome()
-
-    base_url = 'https://emaps.elmbridge.gov.uk/'
+    base_url = 'https://emaps.elmbridge.gov.uk/ebc_planning.aspx'
 
     url = 'https://emaps.elmbridge.gov.uk/ebc_planning.aspx?requesttype=parseTemplate&template=AdvancedSearchTab.tmplt&pagerecs=2000'
     driver.get(url)
@@ -68,85 +71,74 @@ def elmbridge_bot(startdate, enddate, wordlist):
     input_element2 = driver.find_element(By.ID, 'datevalidatedto')
     input_element1.send_keys(reversed_startdate)
     input_element2.send_keys(reversed_enddate)
-    # Click the search button
-    search_element = driver.find_element(By.CLASS_NAME, 'atSpacing')
-    search_element.click()
+    search_elements = driver.find_elements(By.CSS_SELECTOR, "input.atSpacing")
 
-    # Wait for the page to load (you may need to adjust the waiting time)
-    wait = WebDriverWait(driver, 10)
-    wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
+    # Select 500 and submit to show max results
+    num_results_element = Select(driver.find_element(By.ID, 'maxrecords'))
+    num_results_element.select_by_visible_text('500')
 
-    # Select 100 and submit to show max results
-    num_results_element = Select(driver.find_element(By.ID, 'resultsPerPage'))
-    num_results_element.select_by_visible_text('100')
-    num_results_go = driver.find_element(By.CLASS_NAME, 'primary')
-    num_results_go.click()
+    # Filter the elements by their value attribute
+    search_element = None
 
-    next_a_tag = None
-    multiple_pages = True
+    for element in search_elements:
+        if element.get_attribute("value") == "Search":
+            search_element = element
+            search_element.click()
 
 
+    # wait = WebDriverWait(driver, 10)
+    # wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
+    # Get the page source after the search
+    page_source = driver.page_source
 
-    while (multiple_pages):
+    # Parse HTML with BeautifulSoup
+    soup = BeautifulSoup(page_source, 'html.parser')
 
-        wait = WebDriverWait(driver, 10)
-        wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
-        # Get the page source after the search
-        page_source = driver.page_source
+    searchResultsPage = soup.find('div', id='atWeeklyListTable')
+    searchResults = searchResultsPage.find_all('tr')
+    searchResultsSnip = searchResults[1:]
 
-        # Parse HTML with BeautifulSoup
-        soup = BeautifulSoup(page_source, 'html.parser')
+    row_list = []
 
-        searchResultsPage = soup.find('div', class_='col-a')
-        searchResults = searchResultsPage.find_all('li', class_='searchresult')
+    for row in searchResultsSnip:
+        address_div = row.find('td', class_='proposal')
+        address_desc = address_div.text
 
-        row_list = []
+        if (re.search(words_search_for, address_desc, flags=re.I)):
+            row_list.append(row)
 
-        for row in searchResults:
-            address_div = row.find('a')
-            address_desc = address_div.text
+    print(len(row_list))
+    for row in row_list:
+        # Find the address and add to address_list
+        address_div = row.find('td', class_='address')
+        address = address_div.text.strip()
+        address_list.append(address)
+        a_tag = row.find('a')
+        next_url = a_tag.get('href')
+        summary_page = requests.get(next_url, verify=False)
+        # summary_page = requests.get(
+        #         url='https://app.scrapingbee.com/api/v1/',
+        #         params={
+        #             'api_key': API_KEY,
+        #             'url': next_url,  
+        #         },
+        #     )
+        summary_soup = BeautifulSoup(summary_page.content, "html.parser")
+        info_section = summary_soup.find('div', id='atPubMenu')
+        
+        info_tabs = info_section.find_all('li')
+        info_tab = info_tabs[1]
+        info_a_tag = info_tab.find('a')
+        info_href = info_a_tag.get('href')
+        link_atag = (f'{base_url}{info_href}')
+        further_info = requests.get(link_atag, verify=False)
+        further_info_soup = BeautifulSoup(further_info.content, "html.parser")
+        print(further_info_soup)
+        applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
+        applicant_name = applicant_row.get_text(strip=True)
 
-
-            if (re.search(words_search_for, address_desc, flags=re.I)):
-                row_list.append(row)
-
-        print(len(row_list))
-        for row in row_list:
-            # Find the address and add to address_list
-            address_div = row.find('p', class_='address')
-            address = address_div.text.strip()
-            address_list.append(address)
-            print(address)
-
-            a_tag = row.find('a')
-            href_value = a_tag.get('href')
-            test_url = (f'{base_url}{href_value}')
-            summary_page = requests.get(test_url, verify=False)
-            summary_soup = BeautifulSoup(summary_page.content, "html.parser")
-            info_tab = summary_soup.find(id='subtab_details')
-            info_href = info_tab.get('href')
-            info_atag = (f'{base_url}{info_href}')
-            further_info = requests.get(info_atag, verify=False)
-            further_info_soup = BeautifulSoup(further_info.content, "html.parser")
-            applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
-            applicant_name = applicant_row.get_text(strip=True)
-
-            print(applicant_name)
-            name_list.append(applicant_name)
-
-        try:
-            next_a_tag = driver.find_element(By.CLASS_NAME, 'next')
-            # If the element is found, you can interact with it here
-            multiple_pages = True
-            action = ActionChains(driver)
-            action.move_to_element(next_a_tag).click().perform()
-            # time.sleep(2)
-            # next_a_tag.click()
-            
-        except NoSuchElementException:
-            # If the element is not found, handle the exception here
-            multiple_pages = False
-            print("Element not found. Continuing without clicking.")
+        print(applicant_name)
+        name_list.append(applicant_name)
 
 
 

@@ -13,6 +13,7 @@ from .bots.hammersmith_fulham_bot import hammersmith_fulham_bot
 from .bots.bromley_bot import bromley_bot
 from .bots.merton_bot import merton_bot
 from .bots.kensington_chelsea_bot import kensington_chelsea_bot
+from .bots.elmbridge_bot import elmbridge_bot
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from django.contrib.auth.decorators import login_required
@@ -409,6 +410,8 @@ def results(request):
             my_list = merton_bot(startdate, enddate, wordlist)
         if borough == 'kensington_chelsea':
             my_list = kensington_chelsea_bot(startdate, enddate, wordlist)
+        if borough == 'elmbridge':
+            my_list = elmbridge_bot(startdate, enddate, wordlist)
 
         data_list = my_list[0]
         num_results = my_list[1]
