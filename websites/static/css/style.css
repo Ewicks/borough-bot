@@ -843,3 +843,8 @@ tr:hover {
     }
 
 }
+
+.active-bot {
+    color: blue;
+    border-bottom: 1px solid blue;
+}

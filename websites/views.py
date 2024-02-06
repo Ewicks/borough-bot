@@ -488,7 +488,7 @@ def results(request):
 
         }
 
-        return render(request, 'bots.html', context)
+        return redirect('bots')
     else:
         scrape_results = Scrape.objects.filter(user=request.user)
 
