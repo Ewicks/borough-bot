@@ -36,8 +36,6 @@ def get_word_objects(request):
 
     return objectlist
 
-def test(request):
-    return render(request, 'test.html', {})
 
 def pricing(request):
     return render(request, 'pricing.html', {})

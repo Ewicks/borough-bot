@@ -19,7 +19,6 @@ urlpatterns = [
     path('reviews', views.reviews, name='reviews'),
     path('delete_scrape/<int:pk>/', views.delete_scrape, name='delete_scrape'),
     path('download_spreadsheet/<int:pk>/', views.download_spreadsheet, name='download_spreadsheet'),
-    path('test', views.test, name='test'),
     path('pricing', views.pricing, name='pricing'),
     path('contact', views.contact, name='contact'),
     path('about', views.about, name='about'),
