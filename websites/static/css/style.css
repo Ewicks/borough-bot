@@ -56,10 +56,6 @@ header {
     text-decoration: none;
 }
 
-a {
-    color: white;
-}
-
 .ul, li, a > span {
     font-weight: 700;
     margin-inline-end: 0.75em;
@@ -844,7 +840,31 @@ tr:hover {
 
 }
 
-.active-bot {
-    color: blue;
-    border-bottom: 1px solid blue;
+.bot-title {
+    color: black;
+}
+
+table tbody tr:hover {
+    background-color: #F8F9FA !important;
+}
+
+td {
+    background-color: unset !important;
+}
+
+table tr:nth-child(even) {
+    background-color: white;
+}
+
+.table>:not(caption)>*>* {
+    padding: 0px;
+
+}
+
+.tbody-border tr th{
+    padding: 8px 8px 8px 16px !important;
+}
+
+tbody tr td {
+    padding: 11px 15px !important;
 }
