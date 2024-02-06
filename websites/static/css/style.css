@@ -31,6 +31,9 @@ header {
     height: 70px;
 }
 
+.logo-p {
+    padding-left: 30px;
+}
 
 .flex {
     display: flex;
@@ -69,7 +72,12 @@ a {
     margin: auto 0px;
 }
 
-@media (max-width: 35em) {
+.point i {
+    position: absolute;
+    color: rgb(131, 31, 231) !important;
+}
+
+@media (max-width: 707px) {
     .primary-navigation {
         gap: 3rem;
         position: fixed;
@@ -365,14 +373,13 @@ table tr:nth-child(even) {
 .pagination li:hover {
     cursor: pointer;
 }
-/* table tbody tr {
-    display: none;
-} */
 
 .home-img {
     height: 100%;
     width: 100%;
     background-repeat: repeat;
+    object-fit: contain;
+    
 }
 
 .bg-home {
@@ -405,6 +412,16 @@ table tr:nth-child(even) {
     color: white;
     border: 2px solid rgb(138, 84, 255);
     border-radius: 10px;
+}
+
+span i {
+    color: rgb(138, 84, 255) !important;
+}
+
+.home-btn:hover {
+    background-color: rgba(138, 84, 255, .5);
+    color: white;
+    
 }
 
 .login-btn {
