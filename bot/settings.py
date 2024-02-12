@@ -29,7 +29,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# settings.py
+
+ALLOWED_HOSTS = [
+    'borough-bot-ea54e30ffab0.herokuapp.com',
+    'borough-bot.herokuapp.com',
+    'localhost',
+    '127.0.0.1'
+]
+
 
 
 # Application definition
