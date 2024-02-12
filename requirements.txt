@@ -59,7 +59,8 @@ typing_extensions==4.7.1
 uritemplate==4.1.1
 urllib3==1.26.9
 useragent==0.1.1
-webdriver-manager==4.0.1
+webdriver-manager
+
 wsproto==1.2.0
 yarg==0.1.9
 zipp==3.15.0
