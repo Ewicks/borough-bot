@@ -22,6 +22,8 @@ from django.shortcuts import get_object_or_404
 import json
 from django.http import HttpResponse
 from django.core.files.base import ContentFile
+import os
+from django.conf import settings
 
 
 
@@ -409,7 +411,9 @@ def results(request):
         # Open the Google Spreadsheet using its title
         # Set up the credentials
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds = ServiceAccountCredentials.from_json_keyfile_name("/Users/ethanwicks/Desktop/credentials.json", scope)
+        credentials_file_path = os.path.join(settings.BASE_DIR, 'credentials.json')
+        creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_file_path, scope)
+        # creds = ServiceAccountCredentials.from_json_keyfile_name("/Users/ethanwicks/Desktop/credentials.json", scope)
         client = gspread.authorize(creds)
 
         # Open the Google Spreadsheet using its title
