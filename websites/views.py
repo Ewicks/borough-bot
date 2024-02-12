@@ -411,6 +411,7 @@ def results(request):
         # Set up the credentials
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
         credentials_file_path = os.environ.get('CREDENTIALS_JSON_PATH')
+        print("File path:", credentials_file_path)
         # credentials_file_path = os.path.join(settings.BASE_DIR, 'credentials.json')
         print(credentials_file_path)
         creds = ServiceAccountCredentials.from_json_keyfile_name(credentials_file_path, scope)
