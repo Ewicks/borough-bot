@@ -416,7 +416,7 @@ def results(request):
         lol = os.environ.get('CREDENTIALS_JSON_PATH')
         testing = ('/Users/ethanwicks/Documents/' + lol)
         print(testing)
-        creds = ServiceAccountCredentials.from_json_keyfile_name(testing, scope)
+        creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json' , scope)
         client = gspread.authorize(creds)
 
         # Open the Google Spreadsheet using its title
