@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # settings.py
 
@@ -81,6 +81,9 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'bot.wsgi.application'
 
